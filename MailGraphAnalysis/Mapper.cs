@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MailGraphAnalysis.Models;
-using MailGraphAnalysis.DB.Models;
+using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
 
 namespace MailGraphAnalysis

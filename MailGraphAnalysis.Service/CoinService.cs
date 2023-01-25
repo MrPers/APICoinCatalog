@@ -1,12 +1,10 @@
-﻿using MailGraphAnalysis.Contracts.Repo;
+﻿using AutoMapper;
+using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Contracts.Services;
-using MailGraphAnalysis.DB.Models;
+using MailGraphAnalysis.Data.Business;
+using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
-using MailGraphAnalysis.DB.Business;
-using AutoMapper;
 
 namespace MailGraphAnalysis.Services
 {

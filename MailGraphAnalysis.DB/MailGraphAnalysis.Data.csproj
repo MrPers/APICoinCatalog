@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MailGraphAnalysis.Contracts\MailGraphAnalysis.Contracts.csproj" />
+    <ProjectReference Include="..\MailGraphAnalysis.Data.Model\MailGraphAnalysis.Entity.csproj" />
     <ProjectReference Include="..\MailGraphAnalysis.DTO\MailGraphAnalysis.DTO.csproj" />
   </ItemGroup>
 

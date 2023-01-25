@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MimeKit" Version="3.4.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MailGraphAnalysis.Data.Model\MailGraphAnalysis.Entity.csproj" />
     <ProjectReference Include="..\MailGraphAnalysis.DTO\MailGraphAnalysis.DTO.csproj" />
   </ItemGroup>
 

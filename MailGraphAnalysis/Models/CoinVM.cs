@@ -6,7 +6,7 @@ namespace MailGraphAnalysis.Models
     {
         [Required]
         public int Id { get; set; }
-        [MinLength(4)]
         public string Name { get; set; }
+        public string UrlIcon { get; set; }
     }
 }

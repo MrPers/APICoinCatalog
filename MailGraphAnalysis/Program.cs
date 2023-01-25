@@ -1,13 +1,13 @@
-using MailGraphAnalysis.DB;
+using MailGraphAnalysis.Data;
 using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Services;
 using MailGraphAnalysis.Contracts.Business;
 using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Contracts.Services;
-using MailGraphAnalysis.Repository;
 using Microsoft.EntityFrameworkCore;
-using Autofac.Extensions.DependencyInjection;
-using Autofac;
+//using Autofac.Extensions.DependencyInjection;
+//using Autofac;
+using MailGraphAnalysis.Data.Repository;
 
 namespace MailGraphAnalysis
 {
@@ -21,12 +21,10 @@ namespace MailGraphAnalysis
             IServiceCollection services = builder.Services;
             ConfigureServices(services, configuration);
 
-            builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-
             var host = builder.Build();
             var env = builder.Environment;
-            SeedDatabaseAsync(host);
             Configure(host, env);
+            SeedDatabaseAsync(host);
             await host.RunAsync();
             
         }
@@ -55,8 +53,8 @@ namespace MailGraphAnalysis
             services.AddCors();
 
             string connection = configuration.GetConnectionString("DefaultConnection");
-            //services.AddDbContext<DataContext>(options => options.UseSqlServer(connection)); //SQL
-            services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(connection)); //Memory
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection)); //SQL
+            //services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(connection)); //Memory
             services.AddMemoryCache();  //System.AggregateException: 'Some services are not able to be constructed (Error while validating the service descriptor 'ServiceType: MailGraphAnalysis.Contracts.Services.ILetterService Lifetime: Scoped ImplementationType: 
         }
 
@@ -80,6 +78,7 @@ namespace MailGraphAnalysis
 
         private static async void SeedDatabaseAsync(WebApplication host)
         {
+
             using (var scope = host.Services.CreateScope())
             {
                 await DataSample.InitializeAsync(scope);

@@ -1,10 +1,10 @@
-﻿using MailGraphAnalysisGraphAnalysis.DB.Models;
+﻿using MailGraphAnalysis.Persistence;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MailGraphAnalysis.DB.Models
+namespace MailGraphAnalysis.Entity
 {
     public class Letter : BaseEntity<int>
     {

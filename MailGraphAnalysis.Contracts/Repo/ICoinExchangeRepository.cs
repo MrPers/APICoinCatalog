@@ -1,4 +1,4 @@
-﻿using MailGraphAnalysis.DB.Models;
+﻿using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using MailGraphAnalysis.DTO;
 using System.ComponentModel.DataAnnotations;
 
-namespace MailGraphAnalysisGraphAnalysis.DB.Models
+namespace MailGraphAnalysis.Persistence
 {
     public class BaseEntity<T> : IBaseEntity<T>
     {

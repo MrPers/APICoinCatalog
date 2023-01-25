@@ -1,16 +1,14 @@
-﻿using MailGraphAnalysisGraphAnalysis.DB.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using MailGraphAnalysis.Persistence;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MailGraphAnalysis.DB.Models
+namespace MailGraphAnalysis.Entity
 {
     //[Index(nameof(Name), IsUnique = true)]
     public class Coin : BaseEntity<int>
     {
         [JsonProperty("asset_id")]
-        [Column(TypeName = "varchar(5)")]
         [Required]
         public string Name { get; set; }
         [JsonProperty("url")]

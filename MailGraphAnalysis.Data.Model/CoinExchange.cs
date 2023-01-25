@@ -1,8 +1,8 @@
-﻿using MailGraphAnalysisGraphAnalysis.DB.Models;
+﻿using MailGraphAnalysis.Persistence;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MailGraphAnalysis.DB.Models
+namespace MailGraphAnalysis.Entity
 {
     public class CoinExchange : BaseEntity<int>
     {

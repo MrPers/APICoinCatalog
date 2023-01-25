@@ -1,11 +1,12 @@
-﻿using MailGraphAnalysis.DB.Business;
-using MailGraphAnalysis.DB.Models;
+﻿using MailGraphAnalysis.Data.Business;
+using MailGraphAnalysis.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using AutoMapper;
+using MailGraphAnalysis.Data.Repository;
 
-namespace MailGraphAnalysis.DB
+namespace MailGraphAnalysis.Data
 {
     public class DataSample
     {
@@ -16,9 +17,14 @@ namespace MailGraphAnalysis.DB
             IServiceProvider scopeServiceProvider = serviceScope.ServiceProvider;
             await scopeServiceProvider.GetRequiredService<DataContext>().Database.MigrateAsync();
             var context = scopeServiceProvider.GetRequiredService<DataContext>();
-            //var mapper = scopeServiceProvider.GetRequiredService<Mapper>();
 
-            //var rt = new CoinExchangeRepository(context, mapper);
+            //object value = scopeServiceProvider.IsRegistered<Mapper>();
+
+            var mapper = scopeServiceProvider.GetRequiredService<Mapper>();
+
+            var rt = new CoinRepository(context, mapper);
+
+            var g = await rt.GetCoinsAllWithPreviousInformation();
 
             if (!context.Coins.Any())
             {
@@ -36,26 +42,26 @@ namespace MailGraphAnalysis.DB
                 await context.SaveChangesAsync();
             }
 
-            if (!context.CoinExchanges.Any())
-            {
+            //if (!context.CoinExchanges.Any())
+            //{
 
 
-                var coinsName = new List<String>
-                {
-                    "BTC",
-                    "ETH",
-                    "SOL",
-                    "DOT",
-                };
+            //    var coinsName = new List<String>
+            //    {
+            //        "BTC",
+            //        "ETH",
+            //        "SOL",
+            //        "DOT",
+            //    };
 
-                List <Coin> coins = await context.Set<Coin>().ToListAsync();
+            //    List <Coin> coins = await context.Set<Coin>().ToListAsync();
 
-                var coinExchanges = await CoinFromAPI.TakeCoinsFromAPIAsync(coins);
+            //    var coinExchanges = await CoinFromAPI.TakeCoinsFromAPIAsync(coins);
 
-                context.CoinExchanges.AddRange(coinExchanges);
+            //    context.CoinExchanges.AddRange(coinExchanges);
 
-                await context.SaveChangesAsync();
-            }
+            //    await context.SaveChangesAsync();
+            //}
         }
     }
 

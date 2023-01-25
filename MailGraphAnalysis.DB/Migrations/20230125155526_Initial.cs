@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MailGraphAnalysis.DB.Migrations
+namespace MailGraphAnalysis.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -17,7 +17,9 @@ namespace MailGraphAnalysis.DB.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(10)", nullable: false)
+                    Name = table.Column<string>(type: "varchar(5)", nullable: false),
+                    UrlIcon = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddedCoin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {

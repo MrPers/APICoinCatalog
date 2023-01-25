@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.DB.Models;
+using MailGraphAnalysis.Entity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailGraphAnalysis.DB.Business
+namespace MailGraphAnalysis.Data.Business
 {
     public static class CoinFromAPI
     {

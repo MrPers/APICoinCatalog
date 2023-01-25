@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="MailKit" Version="3.4.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MailGraphAnalysis.Contracts\MailGraphAnalysis.Contracts.csproj" />
+    <ProjectReference Include="..\MailGraphAnalysis.DB\MailGraphAnalysis.Data.csproj" />
   </ItemGroup>
 
 </Project>

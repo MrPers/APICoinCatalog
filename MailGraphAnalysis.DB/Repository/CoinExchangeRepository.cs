@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MailGraphAnalysis.Contracts.Repo;
-using MailGraphAnalysis.DB;
-using MailGraphAnalysis.DB.Models;
+using MailGraphAnalysis.Data;
+using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailGraphAnalysis.Repository
+namespace MailGraphAnalysis.Data.Repository
 {
     public class CoinExchangeRepository : BaseRepository<CoinExchange, CoinExchangeDto, int>, ICoinExchangeRepository
     {

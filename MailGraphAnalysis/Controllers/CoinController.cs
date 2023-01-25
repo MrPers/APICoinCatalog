@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MailGraphAnalysis.Contracts.Services;
 using MailGraphAnalysis.Models;
-using MailGraphAnalysis.DB.Models;
+using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Services;
 using Microsoft.AspNetCore.Mvc;

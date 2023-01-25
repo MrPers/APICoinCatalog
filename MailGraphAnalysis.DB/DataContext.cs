@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MailGraphAnalysis.DB.Models;
+using MailGraphAnalysis.Entity;
 
-namespace MailGraphAnalysis.DB
+namespace MailGraphAnalysis.Data
 {
     public class DataContext : DbContext
     {

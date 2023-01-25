@@ -3,8 +3,6 @@ using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Contracts.Services;
 using MailGraphAnalysis.DTO;
 using MailKit.Net.Smtp;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.ComponentModel.DataAnnotations;
