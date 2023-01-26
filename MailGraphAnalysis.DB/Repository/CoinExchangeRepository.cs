@@ -12,55 +12,55 @@ using System.Threading.Tasks;
 
 namespace MailGraphAnalysis.Data.Repository
 {
-    public class CoinExchangeRepository : BaseRepository<CoinExchange, CoinExchangeDto, int>, ICoinExchangeRepository
+    public class CoinExchangeRepository : BaseRepository<CoinRate, CoinRateDto, int>, ICoinExchangeRepository
     {
         public CoinExchangeRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
-        public async Task<ICollection<CoinExchangeDto>> GetByCoinIdAsync(int id)
+        public async Task<ICollection<CoinRateDto>> GetByCoinIdAsync(int id)
         {
-            var oldCoinExchanges = await this.PrivateGetByCoinIdAsync(id);
+            var oldCoinRate = await this.PrivateGetByCoinIdAsync(id);
 
-            if (oldCoinExchanges.Count < 1 || oldCoinExchanges == null)
+            if (oldCoinRate.Count < 1 || oldCoinRate == null)
             {
-                throw new ArgumentNullException(nameof(oldCoinExchanges));
+                throw new ArgumentNullException(nameof(oldCoinRate));
             }
 
-            return _mapper.Map<ICollection<CoinExchangeDto>>(oldCoinExchanges);
+            return _mapper.Map<ICollection<CoinRateDto>>(oldCoinRate);
         }
 
-        public async Task UpdateByCoinIdAsync(int Id, IList<CoinExchange> coinExchanges)
+        public async Task UpdateByCoinIdAsync(int Id, IList<CoinRate> coinExchanges)
         {
             if (coinExchanges.Count < 1 || coinExchanges == null)
             {
                 throw new ArgumentNullException(nameof(coinExchanges));
             }
 
-            List<CoinExchange> oldCoinExchanges = await this.PrivateGetByCoinIdAsync(Id);
+            List<CoinRate> oldCoinRate = await this.PrivateGetByCoinIdAsync(Id);
 
-            if (oldCoinExchanges.Count < 1 || oldCoinExchanges == null)
+            if (oldCoinRate.Count < 1 || oldCoinRate == null)
             {
-                throw new ArgumentNullException(nameof(oldCoinExchanges));
+                throw new ArgumentNullException(nameof(oldCoinRate));
             }
 
-            for (int i = 0; i < oldCoinExchanges.Count; i++)
+            for (int i = 0; i < oldCoinRate.Count; i++)
             {
                 _context.Entry(coinExchanges[i])
                     .CurrentValues
-                    .SetValues(oldCoinExchanges[i].Id);
+                    .SetValues(oldCoinRate[i].Id);
             }
 
             await _context.SaveChangesAsync();
         }
 
-        private async Task<List<CoinExchange>> PrivateGetByCoinIdAsync(int id)
+        private async Task<List<CoinRate>> PrivateGetByCoinIdAsync(int id)
         {
-            var oldCoinExchanges = await _context.CoinExchanges
+            var oldCoinRate = await _context.CoinRate
                 .Where(t => t.CoinId == id)
                 .ToListAsync();
 
-            return oldCoinExchanges;
+            return oldCoinRate;
         }
     }
 }

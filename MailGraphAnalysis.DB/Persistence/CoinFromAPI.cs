@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using MailGraphAnalysis.Contracts.Persistence;
+using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,50 +11,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailGraphAnalysis.Data.Business
+namespace MailGraphAnalysis.Data.Persistence
 {
-    public static class CoinFromAPI
+    public class CoinFromAPI: ICoinFromAPI
     {
-        private const string key = "A28CDFC3-9421-46D0-B585-C3F2CA053B18";
-        private const uint limitHours = 9200;
-        private const string Url = "https://rest.coinapi.io/";
-        
-        public static async Task<IList<Coin>> TakeCoinsNameFromAPIAsync() 
-        {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(Url);
-            client.DefaultRequestHeaders.Add("X-CoinAPI-Key", key);
-            HttpResponseMessage response = await client.GetAsync($"v1/assets/icons/32");
-            var result = await response.Content.ReadAsStringAsync();
-            var rootObjects = JsonConvert.DeserializeObject<List<Coin>>(result);
+        protected readonly IOptions<MySettingsModelDto> _appSettings;
+        protected readonly IMapper _mapper;
 
-            client.Dispose();
-
-            return rootObjects;
+        public CoinFromAPI(
+            IOptions<MySettingsModelDto> appSettings, IMapper mapper
+        ){
+            _mapper = mapper;
+            _appSettings = appSettings;
         }
 
-        public static async Task<IList<CoinExchange>> TakeCoinsFromAPIAsync(ICollection<Coin> names)
+        public async Task<IList<Coin>> TakeCoinsNameFromAPIAsync(ICollection<string> names) 
         {
-            List<CoinExchange> coins = new();
             var client = new HttpClient();
-            client.BaseAddress = new Uri(Url);
-            client.DefaultRequestHeaders.Add("X-CoinAPI-Key", key);
+            List<Coin> coins = new();
 
             foreach (var name in names)
             {
-                //var dataStart = DateTime.Now.AddHours(-(limitHours + 1)).ToString("yyyy-MM-ddTHH:mm:ss");
-                string dataStart = "2020-01-01T00:00:00";
-                HttpResponseMessage response = await client
-                    .GetAsync($"v1/ohlcv/BITSTAMP_SPOT_{name.Name}_USD/history?period_id=8HRS&time_start={dataStart}&limit={limitHours}");
+                HttpResponseMessage response = await client.GetAsync(
+                $"https://api.coingecko.com/api/v3/coins/{name}?tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false");
+                var result = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    coins.AddRange(await ReadCoinExchangesAsync(name, response));
-                }
-                else
-                {
-                    throw new Exception("Success Status Fals");
-                }
+                var rootObjects = JsonConvert.DeserializeObject<CoinJSON>(result);
+                coins.Add(_mapper.Map<Coin>(rootObjects));
             }
 
             client.Dispose();
@@ -59,22 +45,32 @@ namespace MailGraphAnalysis.Data.Business
             return coins;
         }
 
-        private static async Task<IList<CoinExchange>> ReadCoinExchangesAsync(Coin name, HttpResponseMessage response)
+        public async Task<IList<CoinRate>> TakeCoinsFromAPIAsync(ICollection<CoinDto> names)
         {
-            List<CoinExchange> coins = new List<CoinExchange>();
-            var result = await response.Content.ReadAsStringAsync();
-            var rootObjects = JsonConvert.DeserializeObject<List<CoinExchangeJson>>(result);
+            string dataStart = "2020-01-01T00:00:00";
+            List<CoinRate> coins = new();
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(_appSettings.Value.Url);
+            client.DefaultRequestHeaders.Add("X-CoinAPI-Key", _appSettings.Value.Key);
+            var timeCoins = _mapper.Map<List<Coin>>(names);
 
-            foreach (var rootObject in rootObjects)
+            foreach (var name in timeCoins)
             {
-                //DateTime rounded = rootObject.Time.AddMilliseconds(-rootObject.Time.Millisecond).AddSeconds(-rootObject.Time.Second);
-                //int minutes = rounded.Minute < 25 ? 0 : rounded.Minute > 55 ? 60 : 30;
-                //rounded = rounded.AddMinutes(minutes - rounded.Minute);
-                //coins.Add(new CoinExchange((float)(rootObject.PriceHigh + rootObject.PriceLow) / 2, (float)rootObject.VolumeTraded, rounded, name.Id));
+                //var dataStart = DateTime.Now.AddHours(-(limitHours + 1)).ToString("yyyy-MM-ddTHH:mm:ss");
+                HttpResponseMessage response = await client
+                    .GetAsync($"v1/ohlcv/BITSTAMP_SPOT_{name.Name}_USD/history?period_id=8HRS&time_start={dataStart}&limit={_appSettings.Value.LimitHours}");
 
-                coins.Add(new CoinExchange((float)(rootObject.PriceHigh + rootObject.PriceLow) / 2, (float)rootObject.VolumeTraded, rootObject.Time, name.Id));
+                var result = await response.Content.ReadAsStringAsync();
+                var rootObjects = JsonConvert.DeserializeObject<List<CoinRateJSON>>(result);
+                var t = _mapper.Map<List<CoinRate>>(rootObjects);
+                coins?.AddRange(t);
+                //coins.ToList().ForEach(n => n.Id = 2);
             }
+
+            client.Dispose();
+
             return coins;
         }
+
     }
 }

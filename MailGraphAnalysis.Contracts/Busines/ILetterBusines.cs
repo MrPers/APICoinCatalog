@@ -12,15 +12,15 @@ namespace MailGraphAnalysis.Contracts.Business
     public interface ILetterBusiness
     {
         Task SendLetterAsync(string textBody, string textSubject, ICollection<string> usersEmail);
-        private MimeMessage CreateLetter(string textBody, string textSubject, ICollection<string> usersEmail)
-        {
-            var emailMessage = new MimeMessage();
+        //private MimeMessage CreateLetter(string textBody, string textSubject, ICollection<string> usersEmail)
+        //{
+        //    var emailMessage = new MimeMessage();
 
-            return emailMessage;
-        }
-        private Task SendLetterAsync(MimeMessage emailMessage)
-        {
-            return Task.FromResult(true);
-        }
+        //    return emailMessage;
+        //}
+        //private Task SendLetterAsync(MimeMessage emailMessage)
+        //{
+        //    return Task.FromResult(true);
+        //}
     }
 }

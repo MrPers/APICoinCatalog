@@ -17,9 +17,10 @@ namespace MailGraphAnalysis.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(5)", nullable: false),
-                    UrlIcon = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddedCoin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GenesisDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    URLImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,21 +44,19 @@ namespace MailGraphAnalysis.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CoinExchanges",
+                name: "CoinRate",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Prices = table.Column<float>(type: "real", nullable: false),
-                    VolumeTraded = table.Column<float>(type: "real", nullable: false),
-                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CoinId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CoinExchanges", x => x.Id);
+                    table.PrimaryKey("PK_CoinRate", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CoinExchanges_Coins_CoinId",
+                        name: "FK_CoinRate_Coins_CoinId",
                         column: x => x.CoinId,
                         principalTable: "Coins",
                         principalColumn: "Id",
@@ -65,8 +64,8 @@ namespace MailGraphAnalysis.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CoinExchanges_CoinId",
-                table: "CoinExchanges",
+                name: "IX_CoinRate_CoinId",
+                table: "CoinRate",
                 column: "CoinId");
 
             migrationBuilder.CreateIndex(
@@ -80,7 +79,7 @@ namespace MailGraphAnalysis.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CoinExchanges");
+                name: "CoinRate");
 
             migrationBuilder.DropTable(
                 name: "Letters");

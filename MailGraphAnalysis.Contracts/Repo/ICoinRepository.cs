@@ -10,7 +10,8 @@ namespace MailGraphAnalysis.Contracts.Repo
 {
     public interface ICoinRepository : IBaseRepository<Coin, CoinDto, int>
     {
-        Task<ICollection<CoinsWithPreviousInformationDto>> GetCoinsAllWithPreviousInformation();
+        Task<ICollection<CoinDto>> GetCoinsAllWithPreviousInformationAsync();
+        Task<ICollection<Coin>> GetCoinsFindByNameAsync(IEnumerable<String> names);
 
     }
 }

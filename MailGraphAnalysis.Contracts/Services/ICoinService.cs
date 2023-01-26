@@ -9,9 +9,8 @@ namespace MailGraphAnalysis.Contracts.Services
 {
     public interface ICoinService
     {
-        Task<ICollection<CoinDto>> GetAllAsync();
-        Task<ICollection<CoinsWithPreviousInformationDto>> GetCoinsAllWithPreviousInformation();
-        Task<ICollection<CoinExchangeDto>> GetByIdAsync(int id);
+        Task<ICollection<CoinDto>> GetCoinsAllPreviousInformationAsync();
+        Task<ICollection<CoinRateDto>> GetByIdAsync(int id);
         Task UpdateByCoinIdAsync(int id);
         Task DeleteAsync(int id);
         Task AddAsync(CoinDto fullCoinDto);

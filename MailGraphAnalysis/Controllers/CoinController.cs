@@ -5,6 +5,7 @@ using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MailGraphAnalysis.Controller
 {
@@ -24,10 +25,10 @@ namespace MailGraphAnalysis.Controller
             _mapper = mapper;
         }
 
-        [HttpGet("get-all-coins")]
-        public async Task<IActionResult> GetCoinsAll()
+        [HttpGet("get-coins-all-previous-information")]
+        public async Task<IActionResult> GetCoinsAllPreviousInformation()
         {
-            var coins = await _coinService.GetAllAsync();
+            var coins = await _coinService.GetCoinsAllPreviousInformationAsync();
             var coinsResult = _mapper.Map<List<CoinVM>>(coins);
 
             IActionResult result = coinsResult == null ? NotFound() : Ok(coinsResult);
@@ -35,22 +36,22 @@ namespace MailGraphAnalysis.Controller
             return result;
         }
 
-        [HttpGet("get-all-coins-with-previous-information")]
-        public async Task<IActionResult> GetCoinsAllWithPreviousInformation()
+        [HttpGet("get-coin-full-information-by-coin-id/{id}")]
+        public async Task<IActionResult> GetCoinFullInformation([Range(1, int.MaxValue)] int id)
         {
-            var coins = await _coinService.GetCoinsAllWithPreviousInformation();
-            var coinsResult = _mapper.Map<List<CoinsWithPreviousInformationVM>>(coins);
+            var coins = await _coinService.GetCoinsAllFullInformationAsync();
+            var coinsResult = _mapper.Map<List<CoinVM>>(coins);
 
             IActionResult result = coinsResult == null ? NotFound() : Ok(coinsResult);
 
             return result;
         }
 
-        [HttpGet("get-by-coin-id-coinExchanges/{id}")]
-        public async Task<IActionResult> GetCoinById(int id)
+        [HttpGet("get-coinExchanges-by-coin-id/{id}")]
+        public async Task<IActionResult> GetCoinById([Range(1, int.MaxValue)] int id)
         {
             var coins = await _coinService.GetByIdAsync(id);
-            var commentsResult = _mapper.Map<List<CoinExchangeVM>>(coins);
+            var commentsResult = _mapper.Map<List<CoinRateVM>>(coins);
             IActionResult result = coins == null ? NotFound() : Ok(commentsResult);
 
             return result;
@@ -59,6 +60,11 @@ namespace MailGraphAnalysis.Controller
         [HttpPost("add-coin-&-coinExchanges")]
         public async Task<IActionResult> AddAsync(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                return ValidationProblem();
+            }
+
             try
             {
                 var coin = new CoinDto() { Name = name };
@@ -72,12 +78,12 @@ namespace MailGraphAnalysis.Controller
             }
         }
 
-        [HttpPut("update-by-coin-id-coinExchanges")]
-        public async Task<IActionResult> UpdateByCoinAsync(int Id)
+        [HttpPut("update-coin-by-id-coinExchanges")]
+        public async Task<IActionResult> UpdateByCoinAsync([Range(1, int.MaxValue)] int id)
         {
             try
             {
-                await _coinService.UpdateByCoinIdAsync(Id);
+                await _coinService.UpdateByCoinIdAsync(id);
 
                 return Ok(true);
             }
@@ -89,7 +95,7 @@ namespace MailGraphAnalysis.Controller
         }
 
         [HttpDelete("delete-coin-and-coinExchanges/{id}")]
-        public async Task<IActionResult> DeleteCoinAndCoinExchanges(int id)
+        public async Task<IActionResult> DeleteCoinAndCoinRate([Range(1, int.MaxValue)]int id)
         {
             try
             {

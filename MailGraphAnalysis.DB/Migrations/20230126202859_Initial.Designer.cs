@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailGraphAnalysis.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230125155526_Initial")]
+    [Migration("20230126202859_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace MailGraphAnalysis.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MailGraphAnalysis.Persistence.Coin", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.Coin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,16 +33,18 @@ namespace MailGraphAnalysis.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("AddedCoin")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("GenesisDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(5)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UrlIcon")
+                    b.Property<string>("URLImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -54,7 +56,7 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.ToTable("Coins");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Persistence.CoinExchange", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.CoinRate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,20 +70,14 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.Property<float>("Prices")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("VolumeTraded")
-                        .HasColumnType("real");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CoinId");
 
-                    b.ToTable("CoinExchanges");
+                    b.ToTable("CoinRate");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Persistence.Letter", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.Letter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,10 +105,10 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.ToTable("Letters");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Persistence.CoinExchange", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.CoinRate", b =>
                 {
-                    b.HasOne("MailGraphAnalysis.Persistence.Coin", "Coin")
-                        .WithMany("CoinExchanges")
+                    b.HasOne("MailGraphAnalysis.Entity.Coin", "Coin")
+                        .WithMany("CoinRate")
                         .HasForeignKey("CoinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -120,9 +116,9 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.Navigation("Coin");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Persistence.Coin", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.Coin", b =>
                 {
-                    b.Navigation("CoinExchanges");
+                    b.Navigation("CoinRate");
                 });
 #pragma warning restore 612, 618
         }

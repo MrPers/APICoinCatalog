@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 //using Autofac.Extensions.DependencyInjection;
 //using Autofac;
 using MailGraphAnalysis.Data.Repository;
+using MailGraphAnalysis.Data.Persistence;
+using MailGraphAnalysis.Contracts.Persistence;
 
 namespace MailGraphAnalysis
 {
@@ -47,6 +49,7 @@ namespace MailGraphAnalysis
             services.AddScoped<ILetterService, LetterService>();
             services.AddScoped<ICoinService, CoinService>();
             services.AddScoped(typeof(ILetterBusiness), typeof(LetterBusines));
+            services.AddScoped(typeof(ICoinFromAPI), typeof(CoinFromAPI));
             services.AddAutoMapper(typeof(Mapper));
 
             // add services CORS

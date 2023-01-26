@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MailGraphAnalysis.DTO
 {
-    public class CoinsWithPreviousInformationDto : IBaseEntity<int>
+    public class CoinRateDto : IBaseEntity<int>
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public float Prices { get; set; }
-        public float VolumeTraded { get; set; }
+        public double Prices { get; set; }
+        public double VolumeTraded { get; set; }
+        public DateTime Time { get; set; }
     }
 }

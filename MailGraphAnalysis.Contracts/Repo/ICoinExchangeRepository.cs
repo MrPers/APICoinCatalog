@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MailGraphAnalysis.Contracts.Repo
 {
-    public interface ICoinExchangeRepository : IBaseRepository<CoinExchange, CoinExchangeDto, int>
+    public interface ICoinExchangeRepository : IBaseRepository<CoinRate, CoinRateDto, int>
     {
-        Task<ICollection<CoinExchangeDto>> GetByCoinIdAsync(int id);
-        Task UpdateByCoinIdAsync(int id, IList<CoinExchange> coinExchanges);
+        Task<ICollection<CoinRateDto>> GetByCoinIdAsync(int id);
+        Task UpdateByCoinIdAsync(int id, IList<CoinRate> coinExchanges);
     }
 }

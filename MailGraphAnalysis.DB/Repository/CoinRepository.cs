@@ -18,20 +18,20 @@ namespace MailGraphAnalysis.Data.Repository
         {
         }
 
-        public async Task<ICollection<CoinsWithPreviousInformationDto>> GetCoinsAllWithPreviousInformation()
+        public async Task<ICollection<CoinDto>> GetCoinsAllWithPreviousInformationAsync()
         {
-            ICollection<CoinsWithPreviousInformationDto> productsDto = new List<CoinsWithPreviousInformationDto>();
+            ICollection<CoinDto> productsDto = new List<CoinDto>();
 
             foreach (var item in await _context.Coins.ToListAsync())
             {
                 var productDto = await _context.Coins
-                    .Join(_context.CoinExchanges
+                    .Join(_context.CoinRate
                     .Where(x => x.CoinId == item.Id)
-                    .Where(t => t.Time == _context.CoinExchanges
+                    .Where(t => t.Time == _context.CoinRate
                         .Where(p => p.CoinId == item.Id).Max(v => v.Time)),
                     p => p.Id,
                     t => t.CoinId,
-                    (p, t) => new CoinsWithPreviousInformationDto
+                    (p, t) => new CoinDto
                     {
                         Id = p.Id,
                         Name = p.Name,
@@ -40,6 +40,21 @@ namespace MailGraphAnalysis.Data.Repository
                     }
                     )
                 .FirstAsync();
+
+                productsDto.Add(productDto);
+            }
+
+            return productsDto;
+        }
+
+        public async Task<ICollection<Coin>> GetCoinsFindByNameAsync(IEnumerable<String> names)
+        {
+            ICollection<Coin> productsDto = new List<Coin>();
+
+            foreach (var item in names)
+            {
+                var productDto = await _context.Coins
+                    .Where(p => p.Name == item).FirstAsync();
 
                 productsDto.Add(productDto);
             }

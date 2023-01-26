@@ -11,12 +11,10 @@ namespace MailGraphAnalysis.Contracts.Repo
     {
         Task<ICollection<TDto>> GetAllAsync();
         Task<TDto> GetByIdAsync(TId Id);
-        Task<ICollection<TTable>> AddAsync(ICollection<TDto> dto);
-        Task<ICollection<TTable>> AddAsync(ICollection<TTable> table);
-        Task<TTable> AddAsync(TDto dto);
+        Task AddAsync(ICollection<TDto> dto);
+        Task AddAsync(TDto dto);
         Task UpdateAsync(TId Id, TDto meaning);
         Task DeleteAsync(TId Id);
-        //Task SaveChangesAsync();
     }
 }
 
