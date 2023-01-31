@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MailGraphAnalysis.Entity;
+using MailGraphAnalysis.Entity.DB;
+using System.ComponentModel.DataAnnotations;
 
 namespace MailGraphAnalysis.Data.Repository
 {
@@ -16,6 +18,14 @@ namespace MailGraphAnalysis.Data.Repository
     {
         public CoinRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {
+        }
+
+        public async Task<CoinDto> GetCoinsAllFullInformationAsync([Range(0, long.MaxValue)] int id)
+        {
+            var productDto = await _context.Coins
+                .Where(p => p.Id == id).FirstAsync();
+
+            return _mapper.Map<CoinDto>(productDto);
         }
 
         public async Task<ICollection<CoinDto>> GetCoinsAllWithPreviousInformationAsync()
@@ -37,24 +47,10 @@ namespace MailGraphAnalysis.Data.Repository
                         Name = p.Name,
                         Prices = t.Prices,
                         VolumeTraded = t.VolumeTraded,
+                        UrlIcon = p.UrlIcon,
                     }
                     )
                 .FirstAsync();
-
-                productsDto.Add(productDto);
-            }
-
-            return productsDto;
-        }
-
-        public async Task<ICollection<Coin>> GetCoinsFindByNameAsync(IEnumerable<String> names)
-        {
-            ICollection<Coin> productsDto = new List<Coin>();
-
-            foreach (var item in names)
-            {
-                var productDto = await _context.Coins
-                    .Where(p => p.Name == item).FirstAsync();
 
                 productsDto.Add(productDto);
             }

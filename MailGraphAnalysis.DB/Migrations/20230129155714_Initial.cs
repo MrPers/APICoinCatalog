@@ -20,7 +20,7 @@ namespace MailGraphAnalysis.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GenesisDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    URLImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UrlIcon = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,8 +49,10 @@ namespace MailGraphAnalysis.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Prices = table.Column<float>(type: "real", nullable: false),
-                    CoinId = table.Column<int>(type: "int", nullable: false)
+                    CoinId = table.Column<int>(type: "int", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VolumeTraded = table.Column<float>(type: "real", nullable: false),
+                    Prices = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {

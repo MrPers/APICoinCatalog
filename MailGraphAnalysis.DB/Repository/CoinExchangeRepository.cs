@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MailGraphAnalysis.Entity.DB;
+using System.ComponentModel.DataAnnotations;
 
 namespace MailGraphAnalysis.Data.Repository
 {
@@ -18,7 +20,7 @@ namespace MailGraphAnalysis.Data.Repository
         {
         }
 
-        public async Task<ICollection<CoinRateDto>> GetByCoinIdAsync(int id)
+        public async Task<ICollection<CoinRateDto>> GetCoinRateAllByIdAsync([Range(0, long.MaxValue)] int id)
         {
             var oldCoinRate = await this.PrivateGetByCoinIdAsync(id);
 
@@ -30,31 +32,15 @@ namespace MailGraphAnalysis.Data.Repository
             return _mapper.Map<ICollection<CoinRateDto>>(oldCoinRate);
         }
 
-        public async Task UpdateByCoinIdAsync(int Id, IList<CoinRate> coinExchanges)
+        public async Task<DateTime> GetLastCoinRepositoryAsync([Range(0, long.MaxValue)] int id)
         {
-            if (coinExchanges.Count < 1 || coinExchanges == null)
-            {
-                throw new ArgumentNullException(nameof(coinExchanges));
-            }
+            var result = await _context.CoinRate
+                .Where(p => p.CoinId == id).LastAsync();
 
-            List<CoinRate> oldCoinRate = await this.PrivateGetByCoinIdAsync(Id);
-
-            if (oldCoinRate.Count < 1 || oldCoinRate == null)
-            {
-                throw new ArgumentNullException(nameof(oldCoinRate));
-            }
-
-            for (int i = 0; i < oldCoinRate.Count; i++)
-            {
-                _context.Entry(coinExchanges[i])
-                    .CurrentValues
-                    .SetValues(oldCoinRate[i].Id);
-            }
-
-            await _context.SaveChangesAsync();
+            return result.Time;
         }
 
-        private async Task<List<CoinRate>> PrivateGetByCoinIdAsync(int id)
+        private async Task<List<CoinRate>> PrivateGetByCoinIdAsync([Range(0, long.MaxValue)] int id)
         {
             var oldCoinRate = await _context.CoinRate
                 .Where(t => t.CoinId == id)

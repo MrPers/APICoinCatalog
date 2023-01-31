@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MailGraphAnalysis.Entity;
+using MailGraphAnalysis.Entity.DB;
 
 namespace MailGraphAnalysis.Data
 {

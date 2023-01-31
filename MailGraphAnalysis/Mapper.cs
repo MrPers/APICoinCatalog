@@ -3,6 +3,8 @@ using MailGraphAnalysis.Models;
 using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
 using System;
+using MailGraphAnalysis.Entity.DB;
+using MailGraphAnalysis.Entity.JSON;
 
 namespace MailGraphAnalysis
 {
@@ -13,12 +15,12 @@ namespace MailGraphAnalysis
             CreateMap<CoinRateDto, CoinRateVM>()
                 .ForMember(dst => dst.Time, opt => opt.MapFrom(src => GetJavascriptTimestamp(src.Time)));
             CreateMap<CoinRate, CoinRateDto>().ReverseMap();
-            CreateMap<CoinRateJSON, CoinRate>()
+            CreateMap<CoinRateJSON, CoinRateDto>()
                 .ForMember(dst => dst.Prices, opt => opt.MapFrom(src => (src.PriceHigh + src.PriceLow)/2));
 
-            CreateMap<CoinJSON, Coin>()
+            CreateMap<CoinJSON, CoinDto>()
                 .ForMember(dst => dst.Description, opt => opt.MapFrom(src => src.Description.En))
-                .ForMember(dst => dst.URLImage, opt => opt.MapFrom(src => src.URLImage.Thumb));
+                .ForMember(dst => dst.UrlIcon, opt => opt.MapFrom(src => src.UrlIcon.Thumb));
             CreateMap<Coin, CoinDto>().ReverseMap();
             CreateMap<CoinDto, CoinVM>();
             CreateMap<CoinDto, CoinFullVM>();

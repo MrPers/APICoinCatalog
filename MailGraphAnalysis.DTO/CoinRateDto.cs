@@ -12,5 +12,6 @@ namespace MailGraphAnalysis.DTO
         public double Prices { get; set; }
         public double VolumeTraded { get; set; }
         public DateTime Time { get; set; }
+        public int CoinId { get; set; }
     }
 }

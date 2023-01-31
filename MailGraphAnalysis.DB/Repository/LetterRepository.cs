@@ -3,6 +3,7 @@ using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Data;
 using MailGraphAnalysis.Entity;
 using MailGraphAnalysis.DTO;
+using MailGraphAnalysis.Entity.DB;
 
 namespace MailGraphAnalysis.Data.Repository
 {

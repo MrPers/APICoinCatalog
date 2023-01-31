@@ -11,8 +11,8 @@ namespace MailGraphAnalysis.Contracts.Repo
     {
         Task<ICollection<TDto>> GetAllAsync();
         Task<TDto> GetByIdAsync(TId Id);
-        Task AddAsync(ICollection<TDto> dto);
-        Task AddAsync(TDto dto);
+        Task<ICollection<TId>> AddCollectionAsync(ICollection<TDto> dto);
+        Task<TId> AddAsync(TDto dto);
         Task UpdateAsync(TId Id, TDto meaning);
         Task DeleteAsync(TId Id);
     }

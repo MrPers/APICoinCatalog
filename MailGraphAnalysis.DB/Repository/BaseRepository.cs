@@ -21,7 +21,8 @@ namespace MailGraphAnalysis.Entity
             _context = context;
             _mapper = mapper;
         }
-        public async Task AddAsync(TDto dto)
+        
+        public async Task<TId> AddAsync(TDto dto)
         {
             if (dto == null)
             {
@@ -38,9 +39,11 @@ namespace MailGraphAnalysis.Entity
             await _context.Set<TTable>().AddAsync(time);
 
             await _context.SaveChangesAsync();
+
+            return time.Id;
         }
 
-        public async Task AddAsync(ICollection<TDto> dto)
+        public async Task<ICollection<TId>> AddCollectionAsync(ICollection<TDto> dto)
         {
             if (dto == null)
             {
@@ -57,6 +60,11 @@ namespace MailGraphAnalysis.Entity
             await _context.Set<TTable>().AddRangeAsync(times);
 
             await _context.SaveChangesAsync();
+
+            var anser = new List<TId>();
+            times.ToList().ForEach(n => anser.Add(n.Id));
+
+            return anser;
         }
 
         public async Task UpdateAsync(TId Id, TDto meaning)

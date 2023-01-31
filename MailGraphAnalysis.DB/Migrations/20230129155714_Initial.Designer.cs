@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailGraphAnalysis.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230126202859_Initial")]
+    [Migration("20230129155714_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace MailGraphAnalysis.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MailGraphAnalysis.Entity.Coin", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.DB.Coin", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace MailGraphAnalysis.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("URLImage")
+                    b.Property<string>("UrlIcon")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -56,7 +56,7 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.ToTable("Coins");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Entity.CoinRate", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.DB.CoinRate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,6 +70,12 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.Property<float>("Prices")
                         .HasColumnType("real");
 
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("VolumeTraded")
+                        .HasColumnType("real");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CoinId");
@@ -77,7 +83,7 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.ToTable("CoinRate");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Entity.Letter", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.DB.Letter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,9 +111,9 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.ToTable("Letters");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Entity.CoinRate", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.DB.CoinRate", b =>
                 {
-                    b.HasOne("MailGraphAnalysis.Entity.Coin", "Coin")
+                    b.HasOne("MailGraphAnalysis.Entity.DB.Coin", "Coin")
                         .WithMany("CoinRate")
                         .HasForeignKey("CoinId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -116,7 +122,7 @@ namespace MailGraphAnalysis.Data.Migrations
                     b.Navigation("Coin");
                 });
 
-            modelBuilder.Entity("MailGraphAnalysis.Entity.Coin", b =>
+            modelBuilder.Entity("MailGraphAnalysis.Entity.DB.Coin", b =>
                 {
                     b.Navigation("CoinRate");
                 });

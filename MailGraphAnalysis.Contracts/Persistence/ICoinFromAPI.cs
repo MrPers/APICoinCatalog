@@ -10,7 +10,7 @@ namespace MailGraphAnalysis.Contracts.Persistence
 {
     public interface ICoinFromAPI
     {
-        Task<IList<Coin>> TakeCoinsNameFromAPIAsync(ICollection<string> names);
-        Task<IList<CoinRate>> TakeCoinsFromAPIAsync(ICollection<CoinDto> names);
+        Task<CoinDto> TakeCoinNameFromAPIAsync(string name);
+        Task<IList<CoinRateDto>> TakeCoinsFromAPIAsync(string name, DateTime date);
     }
 }

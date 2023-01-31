@@ -6,6 +6,7 @@ using AutoMapper;
 using MailGraphAnalysis.Data.Repository;
 using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Contracts.Persistence;
+using MailGraphAnalysis.Contracts.Services;
 
 namespace MailGraphAnalysis.Data
 {
@@ -18,39 +19,27 @@ namespace MailGraphAnalysis.Data
             IServiceProvider scopeServiceProvider = serviceScope.ServiceProvider;
             await scopeServiceProvider.GetRequiredService<DataContext>().Database.MigrateAsync();
             var context = scopeServiceProvider.GetRequiredService<DataContext>();
+            var _coinService = scopeServiceProvider.GetRequiredService<ICoinService>();
 
-            var сoinFromAPI = scopeServiceProvider.GetRequiredService<ICoinFromAPI>();
-
-            if (!context.Coins.Any())
+            if (!context.Coins.Any() & !context.CoinRate.Any())
             {
                 var coinsName = new List<String>
                 {
                     "bitcoin",
-                    "ethereum",
-                    //"solana",
-                    //"cosmos",
-                    //"polkadot",
-                    "binance-peg-xrp",
-                    "binancecoin",
-                    "filecoin"
+                    "ethereum"
                 };
 
-                var newCoins = await сoinFromAPI.TakeCoinsNameFromAPIAsync(coinsName);
-                context.Coins.AddRange(newCoins);
-
-                await context.SaveChangesAsync();
-            }
-
-            if (!context.CoinRate.Any())
-            {
-                var сoinRepository = scopeServiceProvider.GetRequiredService<ICoinRepository>();
-                var coins = await сoinRepository.GetAllAsync();
-
-                var coinExchanges = await сoinFromAPI.TakeCoinsFromAPIAsync(coins);
-
-                context.CoinRate.AddRange(coinExchanges);
-
-                await context.SaveChangesAsync();
+                foreach (var name in coinsName)
+                {
+                    try
+                    {
+                        await _coinService.AddСoinСoinExchangesAsync(name);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException($"Coin not found {name}", ex.Message);
+                    }
+                }
             }
         }
     }

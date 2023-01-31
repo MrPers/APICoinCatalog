@@ -28,37 +28,53 @@ namespace MailGraphAnalysis.Controller
         [HttpGet("get-coins-all-previous-information")]
         public async Task<IActionResult> GetCoinsAllPreviousInformation()
         {
-            var coins = await _coinService.GetCoinsAllPreviousInformationAsync();
-            var coinsResult = _mapper.Map<List<CoinVM>>(coins);
+            try
+            {
+                var coins = await _coinService.GetCoinsAllPreviousInformationAsync();
+                var coinsResult = _mapper.Map<List<CoinVM>>(coins);
 
-            IActionResult result = coinsResult == null ? NotFound() : Ok(coinsResult);
-
-            return result;
+                return Ok(coinsResult);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("get-coin-full-information-by-coin-id/{id}")]
         public async Task<IActionResult> GetCoinFullInformation([Range(1, int.MaxValue)] int id)
         {
-            var coins = await _coinService.GetCoinsAllFullInformationAsync();
-            var coinsResult = _mapper.Map<List<CoinVM>>(coins);
+            try
+            {
+                var coins = await _coinService.GetCoinsAllFullInformationAsync(id);
+                var coinsResult = _mapper.Map<CoinFullVM>(coins);
 
-            IActionResult result = coinsResult == null ? NotFound() : Ok(coinsResult);
-
-            return result;
+                return Ok(coinsResult);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("get-coinExchanges-by-coin-id/{id}")]
         public async Task<IActionResult> GetCoinById([Range(1, int.MaxValue)] int id)
         {
-            var coins = await _coinService.GetByIdAsync(id);
-            var commentsResult = _mapper.Map<List<CoinRateVM>>(coins);
-            IActionResult result = coins == null ? NotFound() : Ok(commentsResult);
+            try
+            {
+                var coins = await _coinService.GetCoinRateAllByIdAsync(id);
+                var commentsResult = _mapper.Map<List<CoinRateVM>>(coins);
 
-            return result;
+                return Ok(commentsResult);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
-
-        [HttpPost("add-coin-&-coinExchanges")]
-        public async Task<IActionResult> AddAsync(string name)
+        //так можно
+        [HttpPost("add-coin-&-coinExchanges/{name}")]
+        public async Task<IActionResult> AddСoinСoinExchangesAsync([FromRoute] string name, [Range(1546300800000, long.MaxValue)] long ticks = 1577836800000)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -67,23 +83,22 @@ namespace MailGraphAnalysis.Controller
 
             try
             {
-                var coin = new CoinDto() { Name = name };
-                await _coinService.AddAsync(coin);
+                await _coinService.AddСoinСoinExchangesAsync(name, ticks);
 
                 return Ok(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return ValidationProblem();
+                return NotFound(ex.Message);
             }
         }
 
-        [HttpPut("update-coin-by-id-coinExchanges")]
-        public async Task<IActionResult> UpdateByCoinAsync([Range(1, int.MaxValue)] int id)
+        [HttpPut("update-coin-by-id-coin")]
+        public async Task<IActionResult> UpdateCoinAsync([Range(1, int.MaxValue)] int id)
         {
             try
             {
-                await _coinService.UpdateByCoinIdAsync(id);
+                await _coinService.UpdateCoinsByCoinIdAsync(id);
 
                 return Ok(true);
             }
@@ -91,7 +106,6 @@ namespace MailGraphAnalysis.Controller
             {
                 return NoContent();
             }
-
         }
 
         [HttpDelete("delete-coin-and-coinExchanges/{id}")]
@@ -99,7 +113,7 @@ namespace MailGraphAnalysis.Controller
         {
             try
             {
-                await _coinService.DeleteAsync(id);
+                await _coinService.DeleteCoinAsync(id);
 
                 return Ok(true);
             }

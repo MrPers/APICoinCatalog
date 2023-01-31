@@ -2,11 +2,13 @@
 using MailGraphAnalysis.Contracts.Persistence;
 using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Entity;
+using MailGraphAnalysis.Entity.JSON;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,52 +27,58 @@ namespace MailGraphAnalysis.Data.Persistence
             _appSettings = appSettings;
         }
 
-        public async Task<IList<Coin>> TakeCoinsNameFromAPIAsync(ICollection<string> names) 
+        public async Task<CoinDto> TakeCoinNameFromAPIAsync(string name)
         {
-            var client = new HttpClient();
-            List<Coin> coins = new();
+            string result = await TakeCoinsNameFromResponseContentAsync(name);
+            var rootObjects = JsonConvert.DeserializeObject<CoinJSON>(result);
 
-            foreach (var name in names)
-            {
-                HttpResponseMessage response = await client.GetAsync(
-                $"https://api.coingecko.com/api/v3/coins/{name}?tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false");
-                var result = await response.Content.ReadAsStringAsync();
-
-                var rootObjects = JsonConvert.DeserializeObject<CoinJSON>(result);
-                coins.Add(_mapper.Map<Coin>(rootObjects));
-            }
-
-            client.Dispose();
-
-            return coins;
+            return _mapper.Map<CoinDto>(rootObjects);
         }
 
-        public async Task<IList<CoinRate>> TakeCoinsFromAPIAsync(ICollection<CoinDto> names)
+        public async Task<IList<CoinRateDto>> TakeCoinsFromAPIAsync(string name, DateTime date)
         {
-            string dataStart = "2020-01-01T00:00:00";
-            List<CoinRate> coins = new();
+            string result = await TakeCoinsFromResponseContentAsync(name, date);
+            var rootObjects = JsonConvert.DeserializeObject<List<CoinRateJSON>>(result);
+            if (rootObjects.Count() == 0)
+            {
+                throw new ArgumentException("The number of trades for this period is 0");
+            }
+            var answer = _mapper.Map<List<CoinRateDto>>(rootObjects);
+
+            return answer;
+        }
+        
+        private async Task<string> TakeCoinsFromResponseContentAsync(string name, DateTime dateTime)
+        {
             var client = new HttpClient();
-            client.BaseAddress = new Uri(_appSettings.Value.Url);
             client.DefaultRequestHeaders.Add("X-CoinAPI-Key", _appSettings.Value.Key);
-            var timeCoins = _mapper.Map<List<Coin>>(names);
+            HttpResponseMessage response = await client
+                .GetAsync($"https://rest.coinapi.io/v1/ohlcv/BITSTAMP_SPOT_{name}_USD/history?period_id=8HRS&time_start={dateTime.ToString("s")}&limit=8200");
+            
+            client.Dispose();
 
-            foreach (var name in timeCoins)
+            if ((int)response.StatusCode != 200)
             {
-                //var dataStart = DateTime.Now.AddHours(-(limitHours + 1)).ToString("yyyy-MM-ddTHH:mm:ss");
-                HttpResponseMessage response = await client
-                    .GetAsync($"v1/ohlcv/BITSTAMP_SPOT_{name.Name}_USD/history?period_id=8HRS&time_start={dataStart}&limit={_appSettings.Value.LimitHours}");
-
-                var result = await response.Content.ReadAsStringAsync();
-                var rootObjects = JsonConvert.DeserializeObject<List<CoinRateJSON>>(result);
-                var t = _mapper.Map<List<CoinRate>>(rootObjects);
-                coins?.AddRange(t);
-                //coins.ToList().ForEach(n => n.Id = 2);
+                throw new ArgumentException(await response.Content.ReadAsStringAsync());
             }
+
+            return await response.Content.ReadAsStringAsync();
+        }
+        //  подозрительно похожий код
+        private async Task<string> TakeCoinsNameFromResponseContentAsync(string name)
+        {
+            var client = new HttpClient();
+            HttpResponseMessage response = await client
+                .GetAsync($"https://api.coingecko.com/api/v3/coins/{name}?tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false");
 
             client.Dispose();
 
-            return coins;
-        }
+            if ((int)response.StatusCode != 200)
+            {
+                throw new ArgumentException(await response.Content.ReadAsStringAsync());
+            }
 
+            return await response.Content.ReadAsStringAsync();
+        }
     }
 }
