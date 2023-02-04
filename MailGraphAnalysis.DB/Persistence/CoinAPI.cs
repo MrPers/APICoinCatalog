@@ -15,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace MailGraphAnalysis.Data.Persistence
 {
-    public class CoinFromAPI: ICoinFromAPI
+    public class CoinAPI: ICoinAPI
     {
         protected readonly IOptions<MySettingsModelDto> _appSettings;
         protected readonly IMapper _mapper;
 
-        public CoinFromAPI(
+        public CoinAPI(
             IOptions<MySettingsModelDto> appSettings, IMapper mapper
         ){
             _mapper = mapper;
@@ -64,7 +64,7 @@ namespace MailGraphAnalysis.Data.Persistence
 
             return await response.Content.ReadAsStringAsync();
         }
-        //  подозрительно похожий код
+        
         private async Task<string> TakeCoinsNameFromResponseContentAsync(string name)
         {
             var client = new HttpClient();

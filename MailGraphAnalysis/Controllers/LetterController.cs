@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MailGraphAnalysis.Contracts.Services;
+using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -23,12 +24,37 @@ namespace MailGraphAnalysis.Controller
         }
 
         //[Authorize("ALLAdministrator")]
-        [HttpPost("send-letter")]
+        [HttpPost("send-email-addresses")]
         public async Task<IActionResult> SendLetter(LetterVM letter)
         {
-            await _letterService.SendLetterAsync(letter.TextBody, letter.TextSubject, letter.UserEmail);
+            if (letter == null || letter.UserEmail == null || letter.TextSubject == null || letter.TextBody == null)
+            {
+                throw new ArgumentNullException(nameof(letter));
 
-            return Ok(true);
+
+
+            //public int IdCoin;
+            //public int StepCoin;
+            }
+
+            try
+            {
+                //var letterDto = _mapper.Map<LetterDto>(letter);
+                ICollection<LetterDto> lettersDto = new List<LetterDto>();
+                foreach (var item in letter.UserEmail)
+                {
+                    lettersDto.Add(new LetterDto() { UserEmail = item, TextBody = letter.TextBody, TextSubject = letter.TextSubject });
+                }
+
+                await _letterService.SendLetterAsync(lettersDto);
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         ////[Authorize("ALLAdministrator")]

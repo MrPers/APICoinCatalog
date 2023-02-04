@@ -7,6 +7,8 @@ using MailGraphAnalysis.Data.Repository;
 using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Contracts.Persistence;
 using MailGraphAnalysis.Contracts.Services;
+using ChoETL;
+using System.Text;
 
 namespace MailGraphAnalysis.Data
 {
@@ -31,16 +33,18 @@ namespace MailGraphAnalysis.Data
 
                 foreach (var name in coinsName)
                 {
-                    try
-                    {
-                        await _coinService.AddСoinСoinExchangesAsync(name);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException($"Coin not found {name}", ex.Message);
-                    }
+                    await _coinService.AddСoinСoinExchangesAsync(name);
                 }
             }
+
+            //StringBuilder sb = new StringBuilder();
+            //var comm = await context.Coins.ToListAsync();
+
+            //using (var parser = new ChoJSONWriter(sb))
+            //        parser.Write(comm);
+
+            //Console.WriteLine(sb.ToString());
+
         }
     }
 

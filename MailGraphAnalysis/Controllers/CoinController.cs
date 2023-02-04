@@ -15,6 +15,8 @@ namespace MailGraphAnalysis.Controller
     {
         private readonly ICoinService _coinService;
         private readonly IMapper _mapper;
+        private const long data2020 = 1546300800000;
+        private const long data2021 = 1577836800000;
 
         public CoinController(
             ICoinService coinService,
@@ -35,9 +37,9 @@ namespace MailGraphAnalysis.Controller
 
                 return Ok(coinsResult);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -51,30 +53,30 @@ namespace MailGraphAnalysis.Controller
 
                 return Ok(coinsResult);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpGet("get-coinExchanges-by-coin-id/{id}")]
-        public async Task<IActionResult> GetCoinById([Range(1, int.MaxValue)] int id)
+        [HttpGet("get-coinExchanges-by-coin-id/{id}/{step}")]
+        public async Task<IActionResult> GetCoinsById([Range(1, int.MaxValue)] int id, [Range(24, int.MaxValue)] int step)
         {
             try
             {
-                var coins = await _coinService.GetCoinRateAllByIdAsync(id);
+                var coins = await _coinService.GetCoinRateAllByIdAsync(id, step);
                 var commentsResult = _mapper.Map<List<CoinRateVM>>(coins);
 
                 return Ok(commentsResult);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
         }
         //так можно
         [HttpPost("add-coin-&-coinExchanges/{name}")]
-        public async Task<IActionResult> AddСoinСoinExchangesAsync([FromRoute] string name, [Range(1546300800000, long.MaxValue)] long ticks = 1577836800000)
+        public async Task<IActionResult> AddСoinСoinExchangesAsync([FromRoute] string name, [Range(data2020, long.MaxValue)] long ticks = data2021)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -89,11 +91,11 @@ namespace MailGraphAnalysis.Controller
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut("update-coin-by-id-coin")]
+        [HttpGet("update-coin-by-id-coin/{id}")]
         public async Task<IActionResult> UpdateCoinAsync([Range(1, int.MaxValue)] int id)
         {
             try
@@ -102,9 +104,9 @@ namespace MailGraphAnalysis.Controller
 
                 return Ok(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NoContent();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -117,9 +119,9 @@ namespace MailGraphAnalysis.Controller
 
                 return Ok(true);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NoContent();
+                return BadRequest(ex.Message);
             }
         }
     }

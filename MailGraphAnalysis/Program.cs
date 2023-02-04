@@ -1,15 +1,13 @@
 using MailGraphAnalysis.Data;
 using MailGraphAnalysis.DTO;
 using MailGraphAnalysis.Services;
-using MailGraphAnalysis.Contracts.Business;
 using MailGraphAnalysis.Contracts.Repo;
 using MailGraphAnalysis.Contracts.Services;
 using Microsoft.EntityFrameworkCore;
-//using Autofac.Extensions.DependencyInjection;
-//using Autofac;
 using MailGraphAnalysis.Data.Repository;
 using MailGraphAnalysis.Data.Persistence;
 using MailGraphAnalysis.Contracts.Persistence;
+using MailGraphAnalysis.Logic.Service;
 
 namespace MailGraphAnalysis
 {
@@ -48,8 +46,8 @@ namespace MailGraphAnalysis
             services.AddScoped(typeof(ICoinExchangeRepository), typeof(CoinExchangeRepository));
             services.AddScoped<ILetterService, LetterService>();
             services.AddScoped<ICoinService, CoinService>();
-            services.AddScoped(typeof(ILetterBusiness), typeof(LetterBusines));
-            services.AddScoped(typeof(ICoinFromAPI), typeof(CoinFromAPI));
+            services.AddScoped(typeof(ILetterAPI), typeof(LetterAPI));
+            services.AddScoped(typeof(ICoinAPI), typeof(CoinAPI));
             services.AddAutoMapper(typeof(Mapper));
 
             // add services CORS

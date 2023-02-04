@@ -6,15 +6,18 @@ using MailGraphAnalysis.DTO;
 using System.ComponentModel.DataAnnotations;
 using MailGraphAnalysis.Contracts.Persistence;
 
-namespace MailGraphAnalysis.Services
+namespace MailGraphAnalysis.Logic.Service
 {
-    public class CoinService: ICoinService
+    public class CoinService : ICoinService
     {
-        private readonly ICoinFromAPI _сoinFromAPI;
+        private readonly ICoinAPI _сoinFromAPI;
         private readonly ICoinRepository _coinRepository;
         private readonly ICoinExchangeRepository _coinExchangeRepository;
+        private const long data2020 = 1546300800000;
+        private const long data2021 = 1577836800000;
+        private const long data1970 = 621355968000000000;
 
-        public CoinService(ICoinRepository dispatchRepository, ICoinExchangeRepository coinExchangeRepository, ICoinFromAPI сoinFromAPI)
+        public CoinService(ICoinRepository dispatchRepository, ICoinExchangeRepository coinExchangeRepository, ICoinAPI сoinFromAPI)
         {
             _coinExchangeRepository = coinExchangeRepository;
             _coinRepository = dispatchRepository;
@@ -28,11 +31,11 @@ namespace MailGraphAnalysis.Services
             return coins;
         }
 
-        public async Task<ICollection<CoinRateDto>> GetCoinRateAllByIdAsync([Range(1, int.MaxValue)] int id)
+        public async Task<ICollection<CoinRateDto>> GetCoinRateAllByIdAsync([Range(1, int.MaxValue)] int id, [Range(24, int.MaxValue)] int step)
         {
-            var coin = await _coinExchangeRepository.GetCoinRateAllByIdAsync(id);
+            var coins = await _coinExchangeRepository.GetCoinRateAllByIdAsync(id, step);
 
-            return coin;
+            return coins;
         }
 
         public async Task<CoinDto> GetCoinsAllFullInformationAsync([Range(1, int.MaxValue)] int id)
@@ -42,7 +45,7 @@ namespace MailGraphAnalysis.Services
             return coin;
         }
 
-        public async Task AddСoinСoinExchangesAsync(string name, [Range(1577836800000, long.MaxValue)] long ticks = 1577836800000)
+        public async Task AddСoinСoinExchangesAsync(string name, [Range(data2020, long.MaxValue)] long ticks = data2021)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -51,7 +54,7 @@ namespace MailGraphAnalysis.Services
 
             try
             {
-                var data = new DateTime().AddTicks(new DateTime(1970, 1, 1).Ticks + ticks * 10000);
+                var data = new DateTime().AddTicks(data1970 + ticks * 10000);
                 var newCoins = await _сoinFromAPI.TakeCoinNameFromAPIAsync(name);
                 var coinExchanges = await _сoinFromAPI.TakeCoinsFromAPIAsync(newCoins.Name, data);
                 var answerCoins = await _coinRepository.AddAsync(newCoins);
@@ -69,7 +72,7 @@ namespace MailGraphAnalysis.Services
             try
             {
                 var lastDateTime = await _coinExchangeRepository.GetLastCoinRepositoryAsync(id);
-                if( DateTime.Now.Ticks - lastDateTime.AddHours(8).Ticks < 0)
+                if (DateTime.Now.Ticks - lastDateTime.AddHours(8).Ticks < 0)
                 {
                     throw new ArgumentException("8 hours have not yet passed for the update");
                 }
@@ -78,16 +81,23 @@ namespace MailGraphAnalysis.Services
                 coinExchanges.ToList().ForEach(x => x.CoinId = id);
                 await _coinExchangeRepository.AddCollectionAsync(coinExchanges);
             }
-            catch (Exception)
+            catch (Exception er)
             {
-                await _coinRepository.DeleteAsync(id);
+                throw new ArgumentException(er.Message);
             }
         }
 
         public async Task DeleteCoinAsync([Range(1, int.MaxValue)] int id)
         {
-            await _coinRepository.DeleteAsync(id);
+            try
+            {
+                await _coinRepository.DeleteAsync(id);
+            }
+            catch (Exception er)
+            {
+                throw new ArgumentException(er.Message);
+            }
         }
-    
+
     }
 }

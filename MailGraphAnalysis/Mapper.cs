@@ -25,7 +25,6 @@ namespace MailGraphAnalysis
             CreateMap<CoinDto, CoinVM>();
             CreateMap<CoinDto, CoinFullVM>();
 
-            CreateMap<LetterVM, LetterDto>().ReverseMap();
             CreateMap<Letter, LetterDto>().ReverseMap();
         }
 

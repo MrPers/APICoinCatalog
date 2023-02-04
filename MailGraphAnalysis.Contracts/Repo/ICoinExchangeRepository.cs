@@ -10,7 +10,7 @@ namespace MailGraphAnalysis.Contracts.Repo
 {
     public interface ICoinExchangeRepository : IBaseRepository<CoinRate, CoinRateDto, int>
     {
-        Task<ICollection<CoinRateDto>> GetCoinRateAllByIdAsync(int id);
+        Task<ICollection<CoinRateDto>> GetCoinRateAllByIdAsync(int id, int step);
         Task<DateTime> GetLastCoinRepositoryAsync(int id);
     }
 }

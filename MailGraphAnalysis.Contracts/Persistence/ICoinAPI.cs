@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MailGraphAnalysis.Contracts.Persistence
 {
-    public interface ICoinFromAPI
+    public interface ICoinAPI
     {
         Task<CoinDto> TakeCoinNameFromAPIAsync(string name);
         Task<IList<CoinRateDto>> TakeCoinsFromAPIAsync(string name, DateTime date);

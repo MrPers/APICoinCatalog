@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MailGraphAnalysis.DTO\MailGraphAnalysis.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Busines\" />
+  </ItemGroup>
+
 </Project>

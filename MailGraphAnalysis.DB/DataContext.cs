@@ -8,6 +8,7 @@ namespace MailGraphAnalysis.Data
         public DbSet<Letter> Letters { get; set; }
         public DbSet<CoinRate> CoinRate { get; set; }
         public DbSet<Coin> Coins { get; set; }
+        public IQueryable<CoinRate> GetCoins(int id, int stepTime) => FromExpression(() => GetCoins(id, stepTime));
 
         public DataContext(DbContextOptions<DataContext> options): base(options)
         {
@@ -16,6 +17,8 @@ namespace MailGraphAnalysis.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDbFunction(() => GetCoins(default, default));
+
             modelBuilder.Entity<CoinRate>()
                 .HasOne(sc => sc.Coin)
                 .WithMany(s => s.CoinRate)

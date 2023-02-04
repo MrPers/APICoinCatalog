@@ -1,4 +1,4 @@
-﻿using MailGraphAnalysis.Contracts.Business;
+﻿using MailGraphAnalysis.Contracts.Persistence;
 using MailGraphAnalysis.DTO;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
@@ -6,22 +6,22 @@ using MimeKit;
 
 namespace MailGraphAnalysis.Services
 {
-    public class LetterBusines : ILetterBusiness
+    public class LetterAPI : ILetterAPI
     {
         private IOptions<MySettingsModelDto> _appSettings;
 
-        public LetterBusines(
+        public LetterAPI(
             IOptions<MySettingsModelDto> appSettings
         )
         {
             _appSettings = appSettings;
         }
 
-        public async Task SendLetterAsync(string textBody, string textSubject, ICollection<string> usersEmail)
+        public async Task SendLetterAsync(ICollection<LetterDto> letters)
         {
-            MimeMessage emailMessage = CreateLetter(textBody, textSubject, usersEmail);
+            //MimeMessage emailMessage = CreateLetter(textBody, textSubject, usersEmail);
 
-            await SendLetterAsync(emailMessage);
+            //await SendLetterAsync(emailMessage);
         }
 
         private MimeMessage CreateLetter(string textBody, string textSubject, ICollection<string> usersEmail)

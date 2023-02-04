@@ -10,7 +10,8 @@ namespace MailGraphAnalysis.Models
     {
         public string TextSubject { get; set; }
         public string TextBody { get; set; }
-        //[Required]
         public ICollection<string> UserEmail { get; set; }
+        public int IdCoin { get; set; }
+        public int StepCoin { get; set; }
     }
 }

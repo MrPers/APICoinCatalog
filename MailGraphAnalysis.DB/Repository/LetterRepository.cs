@@ -11,6 +11,7 @@ namespace MailGraphAnalysis.Data.Repository
     {
         public LetterRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {
+
         }
 
     }

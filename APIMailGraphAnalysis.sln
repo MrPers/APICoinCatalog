@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailGraphAnalysis.Data", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailGraphAnalysis.Contracts", "MailGraphAnalysis.Contracts\MailGraphAnalysis.Contracts.csproj", "{53D08629-CC20-4507-AAC1-DDB617392842}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailGraphAnalysis.Services", "MailGraphAnalysis.Service\MailGraphAnalysis.Services.csproj", "{5807E4E3-E9F8-4BA4-8F33-0F720FB3BBFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailGraphAnalysis.Logic", "MailGraphAnalysis.Service\MailGraphAnalysis.Logic.csproj", "{5807E4E3-E9F8-4BA4-8F33-0F720FB3BBFA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailGraphAnalysis.Entity", "MailGraphAnalysis.Data.Model\MailGraphAnalysis.Entity.csproj", "{08D2ADA6-5FF3-4AE7-9732-C44A1E4E2901}"
 EndProject
