@@ -1,4 +1,4 @@
-# UICoinCatalog UICoin Catalog
+# UICoinCatalog - my learning project
 
  UICoin is a backend addon to APICoinCatalog
 
