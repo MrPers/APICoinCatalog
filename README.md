@@ -12,7 +12,6 @@ CREATE FUNCTION dbo.GetCoins
     @id INT,
     @stepTime INT
 )
-
 RETURNS @res TABLE
 (
 	Id INT,
@@ -21,10 +20,8 @@ RETURNS @res TABLE
 	VolumeTraded REAL,
 	Prices REAL
 )
-
 AS
 BEGIN
-
 	DECLARE @startDate datetime2, @endDate datetime2;
 
 	SELECT @startDate = MIN([Time]) FROM CoinRate
