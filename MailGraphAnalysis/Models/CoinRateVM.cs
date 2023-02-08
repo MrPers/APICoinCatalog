@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MailGraphAnalysis.Models
+namespace Сoin.Api.Models
 {
     public class CoinRateVM
     {

@@ -1,12 +1,8 @@
-﻿using MailGraphAnalysis.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MailGraphAnalysis.Entity.DB;
+﻿using Сoin.DTO;
+using Сoin.Entity.DB;
+using Base.Contracts;
 
-namespace MailGraphAnalysis.Contracts.Repo
+namespace Base.Data
 {
     public interface ICoinRepository : IBaseRepository<Coin, CoinDto, int>
     {

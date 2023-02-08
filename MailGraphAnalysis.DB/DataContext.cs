@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MailGraphAnalysis.Entity.DB;
+﻿using Base.Data;
+using Microsoft.EntityFrameworkCore;
+using Сoin.Entity.DB;
 
-namespace MailGraphAnalysis.Data
+namespace Сoin.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : BaseDataContext
     {
-        public DbSet<Letter> Letters { get; set; }
-        public DbSet<CoinRate> CoinRate { get; set; }
+        public DbSet<CoinRate> CoinRates { get; set; }
         public DbSet<Coin> Coins { get; set; }
         public IQueryable<CoinRate> GetCoins(int id, int stepTime) => FromExpression(() => GetCoins(id, stepTime));
 
@@ -25,16 +25,6 @@ namespace MailGraphAnalysis.Data
                 .HasForeignKey(sc => sc.CoinId)
                 .HasPrincipalKey(sc => sc.Id)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            //.HasOne(u => u.Coin)
-            //.WithMany(c => c.CoinRate)
-            //.OnDelete(DeleteBehavior.Cascade);
-            //Cascade: the dependent entity is deleted along with the master
-            //SetNull: property - the foreign key in the dependent entity is set to null
-            //Restrict: the dependent entity does not change in any way when the main entity is deleted
-
-            //modelBuilder.Entity<Coin>()
-            //    .Property(u => u.AddedCoin).HasDefaultValue(false);
 
             modelBuilder.Entity<Coin>()
                 .HasIndex(u => u.Name).IsUnique();

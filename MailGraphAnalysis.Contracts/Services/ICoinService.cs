@@ -1,11 +1,11 @@
-﻿using MailGraphAnalysis.DTO;
+﻿using Сoin.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailGraphAnalysis.Contracts.Services
+namespace Сoin.Contracts.Services
 {
     public interface ICoinService
     {

@@ -1,12 +1,12 @@
-﻿using MailGraphAnalysis.DTO;
-using MailGraphAnalysis.Entity;
+﻿using Сoin.DTO;
+using Сoin.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailGraphAnalysis.Contracts.Persistence
+namespace Сoin.Contracts.Persistence
 {
     public interface ICoinAPI
     {

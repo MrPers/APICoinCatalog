@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.Contracts.Persistence;
-using MailGraphAnalysis.DTO;
-using MailGraphAnalysis.Entity;
-using MailGraphAnalysis.Entity.JSON;
+using Сoin.Contracts.Persistence;
+using Сoin.DTO;
+using Сoin.Entity;
+using Сoin.Entity.JSON;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -12,8 +12,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Base.DTO;
 
-namespace MailGraphAnalysis.Data.Persistence
+namespace Сoin.Data.Persistence
 {
     public class CoinAPI: ICoinAPI
     {

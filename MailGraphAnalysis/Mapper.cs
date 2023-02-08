@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.Models;
-using MailGraphAnalysis.Entity;
-using MailGraphAnalysis.DTO;
+using Сoin.Api.Models;
+using Сoin.Entity;
+using Сoin.DTO;
 using System;
-using MailGraphAnalysis.Entity.DB;
-using MailGraphAnalysis.Entity.JSON;
+using Сoin.Entity.DB;
+using Сoin.Entity.JSON;
 
-namespace MailGraphAnalysis
+namespace Сoin
 {
     public class Mapper : Profile
     {
@@ -24,8 +24,6 @@ namespace MailGraphAnalysis
             CreateMap<Coin, CoinDto>().ReverseMap();
             CreateMap<CoinDto, CoinVM>();
             CreateMap<CoinDto, CoinFullVM>();
-
-            CreateMap<Letter, LetterDto>().ReverseMap();
         }
 
         static long GetJavascriptTimestamp(DateTime input)

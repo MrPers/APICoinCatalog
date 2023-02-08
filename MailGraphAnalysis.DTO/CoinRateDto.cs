@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Base.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailGraphAnalysis.DTO
+namespace Сoin.DTO
 {
-    public class CoinRateDto : IBaseEntity<int>
+    public class CoinRateDto : BaseDto<int>
     {
         public int Id { get; set; }
         public double Prices { get; set; }

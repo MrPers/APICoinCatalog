@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Base.Entity;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MailGraphAnalysis.Entity.DB
+namespace Сoin.Entity.DB
 {
-    //[Index(nameof(Name), IsUnique = true)]
     public class Coin : BaseEntity<int>
     {
         public string Name { get; set; }

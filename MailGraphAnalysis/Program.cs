@@ -1,15 +1,16 @@
-using MailGraphAnalysis.Data;
-using MailGraphAnalysis.DTO;
-using MailGraphAnalysis.Services;
-using MailGraphAnalysis.Contracts.Repo;
-using MailGraphAnalysis.Contracts.Services;
+using Ñoin.Data;
+using Ñoin.DTO;
+using Ñoin.Contracts.Repo;
+using Ñoin.Contracts.Services;
 using Microsoft.EntityFrameworkCore;
-using MailGraphAnalysis.Data.Repository;
-using MailGraphAnalysis.Data.Persistence;
-using MailGraphAnalysis.Contracts.Persistence;
-using MailGraphAnalysis.Logic.Service;
+using Ñoin.Data.Repository;
+using Ñoin.Data.Persistence;
+using Ñoin.Contracts.Persistence;
+using Ñoin.Logic.Service;
+using Base.DTO;
+using Base.Data;
 
-namespace MailGraphAnalysis
+namespace Ñoin.Api 
 {
     public class Program
     {
@@ -41,12 +42,9 @@ namespace MailGraphAnalysis
             //register a class
             services.Configure<MySettingsModelDto>(configuration.GetSection("MailConnection"));
 
-            services.AddScoped(typeof(ILetterRepository), typeof(LetterRepository));
             services.AddScoped(typeof(ICoinRepository), typeof(CoinRepository));
             services.AddScoped(typeof(ICoinExchangeRepository), typeof(CoinExchangeRepository));
-            services.AddScoped<ILetterService, LetterService>();
             services.AddScoped<ICoinService, CoinService>();
-            services.AddScoped(typeof(ILetterAPI), typeof(LetterAPI));
             services.AddScoped(typeof(ICoinAPI), typeof(CoinAPI));
             services.AddAutoMapper(typeof(Mapper));
 

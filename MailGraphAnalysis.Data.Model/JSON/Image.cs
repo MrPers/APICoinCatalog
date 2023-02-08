@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MailGraphAnalysis.Entity.JSON
+namespace Сoin.Entity.JSON
 {
     public partial class Image
     {

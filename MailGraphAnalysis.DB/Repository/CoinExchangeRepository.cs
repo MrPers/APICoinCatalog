@@ -1,23 +1,24 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.Contracts.Repo;
-using MailGraphAnalysis.Data;
-using MailGraphAnalysis.Entity;
-using MailGraphAnalysis.DTO;
+using Сoin.Contracts.Repo;
+using Сoin.Entity;
+using Сoin.DTO;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MailGraphAnalysis.Entity.DB;
+using Сoin.Entity.DB;
 using System.ComponentModel.DataAnnotations;
+using Base.Contracts;
+using Base.Data;
 
-namespace MailGraphAnalysis.Data.Repository
+namespace Сoin.Data.Repository
 {
-    public class CoinExchangeRepository : BaseRepository<CoinRate, CoinRateDto, int>, ICoinExchangeRepository
+    public class CoinExchangeRepository : BaseDataContext<CoinRate, CoinRateDto, int>, ICoinExchangeRepository
     {
+        protected readonly DataContext _context;
+        protected readonly IMapper _mapper;
+
         public CoinExchangeRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {
+            _context = context;
+            _mapper = mapper;
         }
 
         public async Task<ICollection<CoinRateDto>> GetCoinRateAllByIdAsync([Range(1, int.MaxValue)] int id, [Range(24, int.MaxValue)] int step)
@@ -35,7 +36,7 @@ namespace MailGraphAnalysis.Data.Repository
 
         public async Task<DateTime> GetLastCoinRepositoryAsync([Range(0, long.MaxValue)] int id)
         {
-            var result = _context.CoinRate
+            var result = _context.CoinRates
                 .Where(p => p.CoinId == id).OrderByDescending(x => x.Time)
               .FirstOrDefault();
 

@@ -1,24 +1,26 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.Contracts.Repo;
-using MailGraphAnalysis.Data;
-using MailGraphAnalysis.DTO;
-using System;
-using System.Collections.Generic;
+using Сoin.DTO;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MailGraphAnalysis.Entity;
-using MailGraphAnalysis.Entity.DB;
+using Сoin.Entity.DB;
 using System.ComponentModel.DataAnnotations;
+using Base.Data;
 
-namespace MailGraphAnalysis.Data.Repository
+namespace Сoin.Data.Repository
 {
-    public class CoinRepository : BaseRepository<Coin, CoinDto, int>, ICoinRepository
+    public class CoinRepository : BaseDataContext<Coin, CoinDto, int>, ICoinRepository
     {
+
+        protected readonly DataContext _context;
+        protected readonly IMapper _mapper;
+
         public CoinRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {
+            _context = context;
+            _mapper = mapper;
         }
+        //public CoinRepository(DataContext context, IMapper mapper) : base(context, mapper)
+        //{
+        //}
 
         public async Task<CoinDto> GetCoinsAllFullInformationAsync([Range(0, long.MaxValue)] int id)
         {
@@ -35,9 +37,9 @@ namespace MailGraphAnalysis.Data.Repository
             foreach (var item in await _context.Coins.ToListAsync())
             {
                 var productDto = await _context.Coins
-                    .Join(_context.CoinRate
+                    .Join(_context.CoinRates
                     .Where(x => x.CoinId == item.Id)
-                    .Where(t => t.Time == _context.CoinRate
+                    .Where(t => t.Time == _context.CoinRates
                         .Where(p => p.CoinId == item.Id).Max(v => v.Time)),
                     p => p.Id,
                     t => t.CoinId,

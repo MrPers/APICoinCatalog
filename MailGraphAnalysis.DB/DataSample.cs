@@ -1,20 +1,12 @@
-﻿using MailGraphAnalysis.Entity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using AutoMapper;
-using MailGraphAnalysis.Data.Repository;
-using MailGraphAnalysis.Contracts.Repo;
-using MailGraphAnalysis.Contracts.Persistence;
-using MailGraphAnalysis.Contracts.Services;
-using ChoETL;
-using System.Text;
+using Сoin.Contracts.Services;
+//using ChoETL;
 
-namespace MailGraphAnalysis.Data
+namespace Сoin.Data
 {
     public class DataSample
     {
-
         public static async Task InitializeAsync(IServiceScope serviceScope)
         {
 
@@ -23,7 +15,7 @@ namespace MailGraphAnalysis.Data
             var context = scopeServiceProvider.GetRequiredService<DataContext>();
             var _coinService = scopeServiceProvider.GetRequiredService<ICoinService>();
 
-            if (!context.Coins.Any() & !context.CoinRate.Any())
+            if (!context.Coins.Any() & !context.CoinRates.Any())
             {
                 var coinsName = new List<String>
                 {
@@ -36,14 +28,6 @@ namespace MailGraphAnalysis.Data
                     await _coinService.AddСoinСoinExchangesAsync(name);
                 }
             }
-
-            //StringBuilder sb = new StringBuilder();
-            //var comm = await context.Coins.ToListAsync();
-
-            //using (var parser = new ChoJSONWriter(sb))
-            //        parser.Write(comm);
-
-            //Console.WriteLine(sb.ToString());
 
         }
     }

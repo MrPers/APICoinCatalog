@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.Contracts.Repo;
-using MailGraphAnalysis.Contracts.Services;
-using MailGraphAnalysis.Entity;
-using MailGraphAnalysis.DTO;
+using Сoin.Contracts.Repo;
+using Сoin.Contracts.Services;
+using Сoin.Entity;
+using Сoin.DTO;
 using System.ComponentModel.DataAnnotations;
-using MailGraphAnalysis.Contracts.Persistence;
+using Сoin.Contracts.Persistence;
+using Base.Data;
 
-namespace MailGraphAnalysis.Logic.Service
+namespace Сoin.Logic.Service
 {
     public class CoinService : ICoinService
     {

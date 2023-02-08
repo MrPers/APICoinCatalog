@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using MailGraphAnalysis.Contracts.Services;
-using MailGraphAnalysis.Models;
-using MailGraphAnalysis.Entity;
-using MailGraphAnalysis.DTO;
-using MailGraphAnalysis.Services;
+using Сoin.Contracts.Services;
+using Сoin.Api.Models;
+using Сoin.Entity;
+using Сoin.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace MailGraphAnalysis.Controller
+namespace Сoin.Api.Controller
 {
     [Route("[controller]")]
     [ApiController]
