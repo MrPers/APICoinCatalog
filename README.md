@@ -24,10 +24,10 @@ AS
 BEGIN
 	DECLARE @startDate datetime2, @endDate datetime2;
 
-	SELECT @startDate = MIN([Time]) FROM CoinRate
+	SELECT @startDate = MIN([Time]) FROM CoinRates
 		WHERE [CoinId] = @id
 
-	SELECT @endDate = MAX([Time]) FROM CoinRate
+	SELECT @endDate = MAX([Time]) FROM CoinRates
 		WHERE [CoinId] = @id
 
 	DECLARE @startTime datetime2 = @startDate;
@@ -40,7 +40,7 @@ BEGIN
 	BEGIN
 		SET @startTime = DATEADD(hour, @stepTime, @startTime);
 		SET @endTime = DATEADD(hour, @stepTime, @endTime);
-		SELECT @testTime = MIN([Time]) FROM CoinRate
+		SELECT @testTime = MIN([Time]) FROM CoinRates
 			WHERE [CoinId] = @id
 			AND [Time] BETWEEN @startTime AND @endTime
 
@@ -54,7 +54,7 @@ BEGIN
 				MIN([Time]),
 				AVG([VolumeTraded]),
 				AVG([Prices])   
-			FROM [MailGraphAnalysisDb].[dbo].[CoinRate]
+			FROM CoinRates
 			WHERE [CoinId] = @id
 			AND [Time] BETWEEN @startTime AND @endTime
 			END 
