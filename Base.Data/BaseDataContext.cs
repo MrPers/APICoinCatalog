@@ -7,8 +7,8 @@ namespace Base.Data
 {
     public class BaseDataContext<TTable, TDto, TId> : IBaseRepository<TTable, TDto, TId> where TTable : class, IBaseEntity<TId>
     {
-        protected readonly BaseDataContext _context;
-        protected readonly IMapper _mapper;
+        private readonly BaseDataContext _context;
+        private readonly IMapper _mapper;
         public BaseDataContext(BaseDataContext context, IMapper mapper)
         {
             _context = context;

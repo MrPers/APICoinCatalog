@@ -1,11 +1,13 @@
 using Base.DTO;
+using Letter.Contracts.Business;
 using Letter.Contracts.Persistence;
 using Letter.Contracts.Repo;
 using Letter.Contracts.Services;
 using Letter.Data;
+using Letter.Data.Persistence;
 using Letter.Data.Repository;
-using Letter.Logic;
-using Letter.Services;
+using Letter.Logic.Business;
+using Letter.Logic.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Letter.Api
@@ -41,6 +43,7 @@ namespace Letter.Api
             services.Configure<MySettingsModelDto>(configuration.GetSection("MailConnection"));
 
             services.AddScoped(typeof(ILetterRepository), typeof(LetterRepository));
+            services.AddScoped(typeof(ILetterBusiness), typeof(LetterBusiness));
             services.AddScoped<ILetterService, LetterService>();
             services.AddScoped(typeof(ILetterAPI), typeof(LetterAPI));
             services.AddAutoMapper(typeof(Mapper));

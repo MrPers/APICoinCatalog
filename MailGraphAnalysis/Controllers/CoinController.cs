@@ -58,22 +58,26 @@ namespace Сoin.Api.Controller
             }
         }
 
-        [HttpGet("get-coinExchanges-by-coin-id/{id}/{step}")]
-        public async Task<IActionResult> GetCoinsById([Range(1, int.MaxValue)] int id, [Range(24, int.MaxValue)] int step)
+        [HttpPost("get-coinExchanges")]
+        public async Task<IActionResult> GetCoinsById(CoinRateQuestion coinRateQuestion)
         {
+            if (coinRateQuestion == null || coinRateQuestion.Id < 1 || coinRateQuestion.Step < 24)
+            {
+                throw new ArgumentNullException(nameof(coinRateQuestion));
+            }
+
             try
             {
-                var coins = await _coinService.GetCoinRateAllByIdAsync(id, step);
-                var commentsResult = _mapper.Map<List<CoinRateVM>>(coins);
-
-                return Ok(commentsResult);
+                var coins = await _coinService.GetCoinRateAllByIdAsync(coinRateQuestion.Id, coinRateQuestion.Step);
+                
+                return Ok(coinRateQuestion.InTick ? _mapper.Map<List<CoinRateVMInTicks>>(coins) : _mapper.Map<List<CoinRateVMInDateTime>>(coins));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        //так можно
+
         [HttpPost("add-coin-&-coinExchanges/{name}")]
         public async Task<IActionResult> AddСoinСoinExchangesAsync([FromRoute] string name, [Range(data2020, long.MaxValue)] long ticks = data2021)
         {

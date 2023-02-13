@@ -12,8 +12,9 @@ namespace Сoin
     {
         public Mapper()
         {
-            CreateMap<CoinRateDto, CoinRateVM>()
+            CreateMap<CoinRateDto, CoinRateVMInTicks>()
                 .ForMember(dst => dst.Time, opt => opt.MapFrom(src => GetJavascriptTimestamp(src.Time)));
+            CreateMap<CoinRateDto, CoinRateVMInDateTime>();
             CreateMap<CoinRate, CoinRateDto>().ReverseMap();
             CreateMap<CoinRateJSON, CoinRateDto>()
                 .ForMember(dst => dst.Prices, opt => opt.MapFrom(src => (src.PriceHigh + src.PriceLow)/2));

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Ñoin.Data.Repository;
 using Ñoin.Data.Persistence;
 using Ñoin.Contracts.Persistence;
-using Ñoin.Logic.Service;
 using Base.DTO;
 using Base.Data;
+using Ñoin.Logic;
 
-namespace Ñoin.Api 
+namespace Ñoin.Api
 {
     public class Program
     {
@@ -40,8 +40,6 @@ namespace Ñoin.Api
             services.AddSwaggerGen();
 
             //register a class
-            services.Configure<MySettingsModelDto>(configuration.GetSection("MailConnection"));
-
             services.AddScoped(typeof(ICoinRepository), typeof(CoinRepository));
             services.AddScoped(typeof(ICoinExchangeRepository), typeof(CoinExchangeRepository));
             services.AddScoped<ICoinService, CoinService>();

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Сoin.Contracts.Persistence;
 using Base.Data;
 
-namespace Сoin.Logic.Service
+namespace Сoin.Logic
 {
     public class CoinService : ICoinService
     {

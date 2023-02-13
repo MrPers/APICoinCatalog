@@ -10,8 +10,8 @@ namespace Сoin.Data.Repository
     public class CoinRepository : BaseDataContext<Coin, CoinDto, int>, ICoinRepository
     {
 
-        protected readonly DataContext _context;
-        protected readonly IMapper _mapper;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
         public CoinRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {

@@ -6,6 +6,6 @@ namespace Letter.Contracts.Services
 {
     public interface ILetterService
     {
-        Task SendLetterAsync(ICollection<LetterDto> letters);
+        Task SendLetterAsync(LetterDto letters);
     }
 }

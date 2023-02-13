@@ -1,48 +1,60 @@
-﻿using Base.DTO;
+﻿using AutoMapper;
+using Base.DTO;
 using Letter.Contracts.Persistence;
 using Letter.DTO;
+using Letter.Entity;
+using Letter.Entity.JSON;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Newtonsoft.Json;
+using System;
 
-namespace Letter.Services
+namespace Letter.Data.Persistence
 {
     public class LetterAPI : ILetterAPI
     {
         private IOptions<MySettingsModelDto> _appSettings;
+        private readonly IMapper _mapper;
 
         public LetterAPI(
-            IOptions<MySettingsModelDto> appSettings
+            IOptions<MySettingsModelDto> appSettings, IMapper mapper
         )
         {
+            _mapper = mapper;
             _appSettings = appSettings;
         }
 
-        public async Task SendLetterAsync(ICollection<LetterDto> letters)
+        public async Task<List<CoinRateDto>> GetCoinsRateDtoById(int IdCoin, int StepCoin)
         {
-            //MimeMessage emailMessage = CreateLetter(textBody, textSubject, usersEmail);
+            string result = await TakeCoinsFromResponseContentAsync(IdCoin, StepCoin);
+            var rootObjects = JsonConvert.DeserializeObject<List<CoinRateJSON>>(result);
 
-            //await SendLetterAsync(emailMessage);
+            if (rootObjects.Count() == 0)
+            {
+                throw new ArgumentException("The number of trades for this period is 0");
+            }
+            
+            return _mapper.Map<List<CoinRateDto>>(rootObjects); ;
         }
 
-        private MimeMessage CreateLetter(string textBody, string textSubject, ICollection<string> usersEmail)
+        public async Task SendLetterAsync(LetterDto letter, string filePath)
+        {
+            MimeMessage emailMessage = CreateLetter(letter.TextBody, letter.TextSubject, letter.UserEmail, filePath);
+
+            await SendLetterAsync(emailMessage);
+        }
+
+        private MimeMessage CreateLetter(string textBody, string textSubject, string usersEmail, string filePath)
         {
             var emailMessage = new MimeMessage();
             var builder = new BodyBuilder();
 
             emailMessage.From.Add(new MailboxAddress(_appSettings.Value.Name, _appSettings.Value.Address));
-            foreach (var userEmail in usersEmail)
-            {
-                emailMessage.To.Add(new MailboxAddress("", userEmail));
-            }
+            emailMessage.To.Add(new MailboxAddress("", usersEmail));
             emailMessage.Subject = textSubject;
-
-            // Set the plain-text version of the message text
             builder.TextBody = textBody;
-            // We may also want to attach a calendar event for Monica's party...
-            builder.Attachments.Add(@"C:\Users\Anton\Desktop\RT.txt");
-
-            // Now we just need to set the message body and we're done
+            builder.Attachments.Add(filePath);
             emailMessage.Body = builder.ToMessageBody();
 
             return emailMessage;
@@ -60,6 +72,23 @@ namespace Letter.Services
 
                 client.Dispose();
             }
+        }
+        
+        private static async Task<string> TakeCoinsFromResponseContentAsync(int idCoin, int stepCoin)
+        {
+            var client = new HttpClient();
+            var json = JsonConvert.SerializeObject(new CoinRateQuestion(idCoin, stepCoin));
+            StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync($"https://localhost:10000/Coin/get-coinExchanges", httpContent);
+
+            client.Dispose();
+
+            if ((int)response.StatusCode != 200)
+            {
+                throw new ArgumentException(await response.Content.ReadAsStringAsync());
+            }
+
+            return await response.Content.ReadAsStringAsync();
         }
 
     }

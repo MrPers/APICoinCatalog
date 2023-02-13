@@ -2,7 +2,7 @@
 using Base.Data;
 using Letter.Contracts.Repo;
 using Letter.DTO;
-using Letter.Entity;
+using Letter.Entity.DB;
 
 namespace Letter.Data.Repository
 {

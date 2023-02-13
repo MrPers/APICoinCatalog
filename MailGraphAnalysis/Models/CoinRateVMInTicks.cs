@@ -2,7 +2,7 @@
 
 namespace Сoin.Api.Models
 {
-    public class CoinRateVM
+    public class CoinRateVMInTicks
     {
         public double Prices { get; set; }
         public double VolumeTraded { get; set; }

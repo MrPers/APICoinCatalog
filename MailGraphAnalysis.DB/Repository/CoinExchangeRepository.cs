@@ -12,8 +12,8 @@ namespace Сoin.Data.Repository
 {
     public class CoinExchangeRepository : BaseDataContext<CoinRate, CoinRateDto, int>, ICoinExchangeRepository
     {
-        protected readonly DataContext _context;
-        protected readonly IMapper _mapper;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
         public CoinExchangeRepository(DataContext context, IMapper mapper) : base(context, mapper)
         {

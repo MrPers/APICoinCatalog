@@ -1,6 +1,6 @@
 ﻿using Letter.DTO;
 using Base.Contracts;
-using Letter.Entity;
+using Letter.Entity.DB;
 
 namespace Letter.Contracts.Repo
 {

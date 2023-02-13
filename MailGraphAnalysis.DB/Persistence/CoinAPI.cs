@@ -1,31 +1,20 @@
 ﻿using AutoMapper;
 using Сoin.Contracts.Persistence;
 using Сoin.DTO;
-using Сoin.Entity;
 using Сoin.Entity.JSON;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Base.DTO;
 
 namespace Сoin.Data.Persistence
 {
     public class CoinAPI: ICoinAPI
     {
-        protected readonly IOptions<MySettingsModelDto> _appSettings;
-        protected readonly IMapper _mapper;
+        private readonly IMapper _mapper;
+        private readonly string Key = "3F7B52C1-065A-49AE-9953-78CA0534C9BC";
 
         public CoinAPI(
-            IOptions<MySettingsModelDto> appSettings, IMapper mapper
+            IMapper mapper
         ){
             _mapper = mapper;
-            _appSettings = appSettings;
         }
 
         public async Task<CoinDto> TakeCoinNameFromAPIAsync(string name)
@@ -52,7 +41,7 @@ namespace Сoin.Data.Persistence
         private async Task<string> TakeCoinsFromResponseContentAsync(string name, DateTime dateTime)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("X-CoinAPI-Key", _appSettings.Value.Key);
+            client.DefaultRequestHeaders.Add("X-CoinAPI-Key", Key);
             HttpResponseMessage response = await client
                 .GetAsync($"https://rest.coinapi.io/v1/ohlcv/BITSTAMP_SPOT_{name}_USD/history?period_id=8HRS&time_start={dateTime.ToString("s")}&limit=8200");
             
