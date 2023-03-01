@@ -13,5 +13,6 @@ namespace Base.DTO
         public string Password { get; set; }//
         public string SmtpClient { get; set; }
         public string TicksInHour { get; set; }
+        public int Port { get; set; }
     }
 }

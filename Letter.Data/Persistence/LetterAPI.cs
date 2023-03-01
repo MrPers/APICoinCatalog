@@ -16,6 +16,7 @@ namespace Letter.Data.Persistence
     {
         private IOptions<MySettingsModelDto> _appSettings;
         private readonly IMapper _mapper;
+        private static string _url = "https://localhost:1000/Coin/get-coinExchanges";
 
         public LetterAPI(
             IOptions<MySettingsModelDto> appSettings, IMapper mapper
@@ -79,7 +80,7 @@ namespace Letter.Data.Persistence
             var client = new HttpClient();
             var json = JsonConvert.SerializeObject(new CoinRateQuestion(idCoin, stepCoin));
             StringContent httpContent = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync($"https://localhost:10000/Coin/get-coinExchanges", httpContent);
+            HttpResponseMessage response = await client.PostAsync(_url, httpContent);
 
             client.Dispose();
 

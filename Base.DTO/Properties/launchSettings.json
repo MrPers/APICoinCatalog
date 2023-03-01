@@ -1,12 +1,12 @@
-﻿{
+{
   "profiles": {
-    "Indentity": {
+    "Base.DTO": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:10001;http://localhost:10000",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:61894;http://localhost:61895"
     }
   }
 }

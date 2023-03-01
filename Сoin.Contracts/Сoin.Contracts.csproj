@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MimeKit" Version="3.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base.Contracts\Base.Contracts.csproj" />
+    <ProjectReference Include="..\Base.Entity\Base.Entity.csproj" />
+    <ProjectReference Include="..\MailGraphAnalysis.DTO\Сoin.DTO.csproj" />
+    <ProjectReference Include="..\Сoin.DTO\Сoin.DTO.csproj" />
+    <ProjectReference Include="..\Сoin.Entity\Сoin.Entity.csproj" />
+  </ItemGroup>
+
+</Project>

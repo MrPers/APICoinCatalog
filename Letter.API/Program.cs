@@ -73,6 +73,10 @@ namespace Letter.Api
             app.UseRouting();
             app.UseEndpoints(x => x.MapDefaultControllerRoute());
 
+            // add services CORS
+            app.UseCors(builder => builder
+                .AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
         }
 
         private static async void SeedDatabaseAsync(WebApplication host)
