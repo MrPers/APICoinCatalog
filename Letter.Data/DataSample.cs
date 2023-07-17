@@ -10,8 +10,13 @@ namespace Letter.Data
         {
 
             IServiceProvider scopeServiceProvider = serviceScope.ServiceProvider;
-            await scopeServiceProvider.GetRequiredService<DataContext>().Database.MigrateAsync();
+
             var context = scopeServiceProvider.GetRequiredService<DataContext>();
+
+            if (context.Database.EnsureCreated())
+            {
+                await scopeServiceProvider.GetRequiredService<DataContext>().Database.MigrateAsync();
+            }
 
 
             //StringBuilder sb = new StringBuilder();

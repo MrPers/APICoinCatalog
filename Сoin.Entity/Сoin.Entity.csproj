@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+ <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Base.Entity\Base.Entity.csproj" />
-    <ProjectReference Include="..\MailGraphAnalysis.DTO\Сoin.DTO.csproj" />
   </ItemGroup>
 
 </Project>

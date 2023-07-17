@@ -1,12 +1,12 @@
-﻿{
+{
   "profiles": {
-    "Test.JavaScript": {
+    "Сoin.Entity": {
       "commandName": "Project",
-      "launchBrowser": false,
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:9001;http://localhost:9000"
+      "applicationUrl": "https://localhost:62694;http://localhost:62695"
     }
   }
 }

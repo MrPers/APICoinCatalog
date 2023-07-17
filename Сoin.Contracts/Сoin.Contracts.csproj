@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Base.Contracts\Base.Contracts.csproj" />
     <ProjectReference Include="..\Base.Entity\Base.Entity.csproj" />
-    <ProjectReference Include="..\MailGraphAnalysis.DTO\Сoin.DTO.csproj" />
     <ProjectReference Include="..\Сoin.DTO\Сoin.DTO.csproj" />
     <ProjectReference Include="..\Сoin.Entity\Сoin.Entity.csproj" />
   </ItemGroup>

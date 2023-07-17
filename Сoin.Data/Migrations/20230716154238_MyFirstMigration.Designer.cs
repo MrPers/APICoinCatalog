@@ -12,8 +12,8 @@ using Сoin.Data;
 namespace Сoin.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230208011705_Inital")]
-    partial class Inital
+    [Migration("20230716154238_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

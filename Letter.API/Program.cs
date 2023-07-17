@@ -23,9 +23,8 @@ namespace Letter.Api
             ConfigureServices(services, configuration);
 
             var host = builder.Build();
-            var env = builder.Environment;
-            Configure(host, env);
-            SeedDatabaseAsync(host);
+            Configure(host, builder.Environment);
+            await SeedDatabaseAsync(host);
             await host.RunAsync();
 
         }
@@ -79,7 +78,7 @@ namespace Letter.Api
 
         }
 
-        private static async void SeedDatabaseAsync(WebApplication host)
+        private static async Task SeedDatabaseAsync(WebApplication host)
         {
 
             using (var scope = host.Services.CreateScope())

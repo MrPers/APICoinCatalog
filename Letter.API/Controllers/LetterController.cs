@@ -23,7 +23,6 @@ namespace Letter.Api.Controller
             _mapper = mapper;
         }
 
-        //[Authorize("ALLAdministrator")]
         [HttpPost("send-email-addresses")]
         public async Task<IActionResult> SendLetter(LetterVM letter)
         {

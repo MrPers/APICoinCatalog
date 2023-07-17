@@ -45,7 +45,7 @@ namespace Сoin.Data.Repository
 
         private async Task<ICollection<CoinRate>> PrivateGetByCoinIdAsync([Range(0, long.MaxValue)] int id, [Range(24, int.MaxValue)] int step)
         {
-            var oldCoinRate = await _context.GetCoins(id, step).ToListAsync(); ;
+            var oldCoinRate = await _context.GetCoins(id, step).ToListAsync();
 
             return oldCoinRate;
         }
